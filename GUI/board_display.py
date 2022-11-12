@@ -42,7 +42,7 @@ def main():
     STATES = 12
     height = 45
     width = 60
-    board = GUIBoard(height, width, STATES)
+    board = BoardWindow(height, width, STATES)
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
