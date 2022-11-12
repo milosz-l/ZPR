@@ -4,14 +4,13 @@ from time import sleep
 
 CELL_SIZE = 15
 
-class GUIBoard:
+class BoardWindow:
     def __init__(self, height, width, states, cell_size=CELL_SIZE):
         self.height = height
         self.width = width
         self.states = states
         self.cell_size=cell_size
         self.window= pygame.display.set_mode((width * cell_size, height * cell_size))
-        self.board = [[0 for _ in range(width)] for _ in range(height)]
         self.colors=define_colors(states)
 
     def update(self, new_board):
@@ -19,6 +18,7 @@ class GUIBoard:
             for x in range(self.width):
                 new_rect = pygame.Rect(x*self.cell_size, y*self.cell_size, self.cell_size, self.cell_size)
                 pygame.draw.rect(self.window, self.colors[new_board[y][x]], new_rect)
+
 
 def new_board(states, height, width):
     board = [[0 for _ in range(width)] for _ in range(height)]
@@ -36,9 +36,10 @@ def define_colors(states):
         B+=255//(states-1)
     return COLORS
 
+
 def main():
     pygame.init()
-    STATES = 3
+    STATES = 12
     height = 45
     width = 60
     board = GUIBoard(height, width, STATES)
