@@ -1,6 +1,7 @@
 import pygame
 import random
 from time import sleep
+import utils
 
 CELL_SIZE = 15
 

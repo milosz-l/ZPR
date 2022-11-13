@@ -1,7 +1,7 @@
 import json
 
 class Params:
-    def __init__(self, range: int = 3, states: int = 2, mid: bool = False, Smin=1, Smax=3, Bmin=2, Bmax=3, neighb="NN"):
+    def __init__(self, range: int = 6, states: int = 2, mid: bool = False, Smin=1, Smax=3, Bmin=2, Bmax=3, neighb="NN"):
         self.range = range
         self.states = states
         self.mid = mid
@@ -23,4 +23,6 @@ def load_params(path):
 
 path = "example_params.json"
 
-print(load_params(path).range)
+#print(load_params(path).range)
+#TODO: required? global OPTIONS
+OPTIONS=Params()
