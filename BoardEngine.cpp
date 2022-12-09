@@ -15,10 +15,6 @@ void BoardEngine::set_cell(int row_num, int col_num, int new_value) {
 	this->board_array[row_num][col_num] = new_value;
 }
 
-// void BoardEngine::set_row(int row_num, std::vector<int> new_row) {
-// 	this->board_array[row_num] = new_row;
-// }
-
 void BoardEngine::print_board_array() {
 	for (int i = 0; i < this->board_array.size(); i++) {
 		for (int j = 0; j < this->board_array[i].size(); j++) {

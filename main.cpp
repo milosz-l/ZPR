@@ -16,9 +16,5 @@ int main() {
 	board.print_board_array();
 	std::cout << "\n";
 
-	// board.set_row(NUM_OF_ROWS, std::vector<int>(NUM_OF_COLS, 1));
-	// board.print_board_array();
-	// std::cout << "\n";
-
 	return 0;
 }
