@@ -1,6 +1,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/macos,python,c++,jupyternotebooks,windows,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,python,c++,jupyternotebooks,windows,visualstudiocode
 
+.vscode
+
 ### C++ ###
 # Prerequisites
 *.d
