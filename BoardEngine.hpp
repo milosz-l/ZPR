@@ -14,6 +14,8 @@ class BoardEngine {
    public:
 	BoardEngine(int board_height, int board_width);
 	twoDimVec get_board_array();
+	void set_cell(int row_num, int col_num, int new_value);
+	// void set_row(int row_num, std::vector<int> new_row);
 	void print_board_array();
 };
 
