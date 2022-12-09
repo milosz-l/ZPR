@@ -1,5 +1,9 @@
 #include "BoardEngine.hpp"
 
+#include <pybind11/pybind11.h>
+
+namespace py = pybind11;
+
 BoardEngine::BoardEngine() {
 	// fill with zeros
 	for (int row_num = 0; row_num < NUM_OF_ROWS; ++row_num) {
@@ -25,4 +29,14 @@ void BoardEngine::print_current_board() const {
 }
 
 void BoardEngine::calculate_next_state() {
+}
+
+PYBIND11_MODULE(generatedBoardEngineModuleName, handle) {
+	handle.doc() = "this is a class generated from cpp";
+	py::class_<BoardEngine>(
+		handle, "PySomeClass")
+		.def(py::init<>())
+		.def("set_cell", &BoardEngine::set_cell)
+		.def("print_current_board", &BoardEngine::print_current_board)
+		.def("calculate_next_state", &BoardEngine::calculate_next_state);
 }
