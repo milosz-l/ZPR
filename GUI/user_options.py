@@ -11,7 +11,18 @@ RANGE=2
 
 
 class UserOptions:
-    def __init__(self, width=100, height=100):
+    """
+    Class representing main window that enables user to choose and specify options for the game.
+    """
+    def __init__(self, width: int=100, height: int=100):
+        """
+        Creates a window for choosing a way to specify game parameters or an option
+        to run with default parameters.
+        Possible choices:
+            Start:  Starts a game with random parameters.
+            Custom options: Redirects to a next window for typing custom parameters.
+            Custome file:   Redirects to a next window for specifying a path to json file with parameters.
+        """
         self.root = tk.Tk()
         self.start_frame = tk.Frame(self.root, width = width, height = height)
         self.start_frame.pack()
@@ -24,6 +35,10 @@ class UserOptions:
         self.root.update()
 
     def options(self):
+        """
+        Window for manually specifying custom parameters.
+        Parameters to fill are: range, states, middle, neighbourhood type.
+        """
         self.start_frame.pack_forget()
         self.options_frame = tk.Frame(self.root, width = WIDTH, height = HEIGHT)
         self.middle_opt = IntVar()
@@ -50,6 +65,9 @@ class UserOptions:
         self.options_frame.pack()
 
     def save_options(self):
+        """
+        Saves custom options enetered by the user.
+        """
         utils.OPTIONS.range=self.entry_range.get()
         utils.OPTIONS.states = self.entry_states.get()
         utils.OPTIONS.mid = self.middle_opt.get()
@@ -58,6 +76,9 @@ class UserOptions:
         self.start_frame.pack()
 
     def file_options(self):
+        """
+        Window for entering a path to json file with custom parameters.
+        """
         self.file_frame = tk.Frame(self.root, width = WIDTH, height = HEIGHT)
         filepath_entry=Label(self.file_frame, text="File path", font=("Courier 12"))
         filepath_entry.pack()
@@ -69,6 +90,9 @@ class UserOptions:
         self.file_frame.pack()
 
     def save_file_options(self):
+        """
+        Saves file path provided by the user.
+        """
         path=self.entry_filepath.get()
         utils.OPTIONS=utils.load_params(path)
         self.file_frame.pack_forget()
@@ -76,6 +100,9 @@ class UserOptions:
 
 
     def start(self):
+        """
+        Starts game with random parameters.
+        """
         STATES = 12
         height = 45
         width = 60
@@ -84,6 +111,9 @@ class UserOptions:
         self.run()
 
     def run(self):
+        """
+        Runs the game. Updates window with game display each time new board becomes available.
+        """
         STATES = 12
         height = 45
         width = 60
@@ -94,6 +124,9 @@ class UserOptions:
             self.root.update()
 
     def stop(self):
+        """
+        Stops the game and closes all windows.
+        """
         pygame.quit()
 
 def new_board(states, height, width):
