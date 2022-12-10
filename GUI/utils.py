@@ -1,7 +1,22 @@
 import json
 
 class Params:
-    def __init__(self, range: int = 6, states: int = 2, mid: bool = False, Smin=1, Smax=3, Bmin=2, Bmax=3, neighb="NN"):
+    """
+    Class representing parameters required to the game
+    """
+    def __init__(self, range: int = 6, states: int = 2, mid: bool = False, Smin: int=1, Smax: int=3, Bmin: int=2, Bmax: int=3, neighb: str="NN"):
+        """
+        Args:
+            range:      Range of the cells.
+            states:     Number of states.
+            mid:        If middle cell is included in the neighbourhood count.
+            Smin:       Minimum count limit for the cell to survive.
+            Smax:       Maximum count limit for the cell to survive.
+            Bmin:       Minimum count limit for a dead cell to become a birth.
+            Bmax:       Maximum count limit for a dead cell to become a birth.
+            neighb:     Extended neighborhood type.
+                        Possible values: NN - von Neumann, NM - Moore.
+        """
         self.range = range
         self.states = states
         self.mid = mid
@@ -9,7 +24,16 @@ class Params:
         self.B = [Bmin, Bmax]
         self.neighb = neighb
 
-def load_params(path):
+def load_params(path: str) -> Params:
+    """
+    Loading parameters from a json file.
+
+    Args:
+        path:       Path to the json file with parameters.
+
+    Returns:
+        Object of type Params with parameters extracted from the file.
+    """
     params = Params()
     with open(path) as f:
         data = json.loads(f.read())
