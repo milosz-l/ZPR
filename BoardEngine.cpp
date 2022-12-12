@@ -3,6 +3,8 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
+// #include <cstdlib>
+
 namespace py = pybind11;
 
 BoardEngine::BoardEngine() {
@@ -34,6 +36,14 @@ Board BoardEngine::get_board() const {
 }
 
 void BoardEngine::calculate_next_state() {
+	int random_cell_row = get_random_number_from_range(0, NUM_OF_ROWS - 1);
+	int random_cell_col = get_random_number_from_range(0, NUM_OF_COLS - 1);
+	int random_cell_state = get_random_number_from_range(0, parameters.count_of_states - 1);
+	set_cell(random_cell_row, random_cell_col, random_cell_state);
+}
+
+int BoardEngine::get_random_number_from_range(int min, int max) const {
+	return min + (rand() % static_cast<int>(max - min + 1));
 }
 
 PYBIND11_MODULE(generatedBoardEngineModuleName, handle) {

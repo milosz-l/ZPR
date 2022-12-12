@@ -3,7 +3,7 @@
 #include <array>
 #include <iostream>
 
-const int NUM_OF_ROWS = 2;
+const int NUM_OF_ROWS = 30;
 const int NUM_OF_COLS = NUM_OF_ROWS;
 
 struct GameParameters {
@@ -22,7 +22,7 @@ typedef std::array<CellValue, NUM_OF_COLS> Row;
 typedef std::array<Row, NUM_OF_ROWS> Board;
 
 class BoardEngine {
-	// const GameParameters parameters;
+	const GameParameters parameters;
 	Board current_board;
 	Board previous_board;
 
@@ -33,6 +33,9 @@ class BoardEngine {
 	void print_current_board() const;
 	Board get_board() const;
 	void calculate_next_state();
+
+   private:
+	int get_random_number_from_range(int min, int max) const;
 };
 
 #endif
