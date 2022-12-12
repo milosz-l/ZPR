@@ -1,6 +1,7 @@
 #include "BoardEngine.hpp"
 
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 
 namespace py = pybind11;
 
@@ -28,6 +29,10 @@ void BoardEngine::print_current_board() const {
 	}
 }
 
+Board BoardEngine::get_board() const {
+	return this->current_board;
+}
+
 void BoardEngine::calculate_next_state() {
 }
 
@@ -38,5 +43,6 @@ PYBIND11_MODULE(generatedBoardEngineModuleName, handle) {
 		.def(py::init<>())
 		.def("set_cell", &BoardEngine::set_cell)
 		.def("print_current_board", &BoardEngine::print_current_board)
+		.def("get_board", &BoardEngine::get_board)
 		.def("calculate_next_state", &BoardEngine::calculate_next_state);
 }

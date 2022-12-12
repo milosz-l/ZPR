@@ -31,6 +31,7 @@ class BoardEngine {
 	BoardEngine(const Board &starting_board);
 	void set_cell(int row_num, int col_num, int new_value);
 	void print_current_board() const;
+	Board get_board() const;
 	void calculate_next_state();
 };
 
