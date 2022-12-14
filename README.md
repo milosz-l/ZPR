@@ -3,7 +3,7 @@ Larger than Life
 
 # How to install and run
 
-## using pip
+## using pip (preferred)
     git clone https://github.com/pybind/pybind11.git
     pip install -r requirements.txt
     mkdir build
