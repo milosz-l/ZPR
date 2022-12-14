@@ -46,3 +46,6 @@ Larger than Life
     make
     cd ..
     pytest tests/
+
+# Generate documentation
+    doxygen config_doxygen
