@@ -3,7 +3,10 @@ import random
 from time import sleep
 # import utils
 from typing import List
-from build.Debug import generatedBoardEngineModuleName
+try:
+    from build.Debug import generatedBoardEngineModuleName
+except ModuleNotFoundError or ImportError:
+    from build import generatedBoardEngineModuleName
 
 CELL_SIZE = 15
 

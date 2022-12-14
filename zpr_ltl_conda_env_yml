@@ -1,0 +1,6 @@
+name: ltl
+dependencies:
+  - python=3.9
+  - pip>=19.0
+  - pip:
+    - pygame==2.1.2

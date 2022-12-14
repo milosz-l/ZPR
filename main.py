@@ -1,4 +1,3 @@
-from build.Debug import generatedBoardEngineModuleName
 from GUI.board_display import main
 
 
