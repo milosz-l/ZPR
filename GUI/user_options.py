@@ -3,12 +3,12 @@ import tkinter as tk
 from tkinter import *
 import random
 from time import sleep
-from board_display import BoardWindow  #TODO: uncomment , new_board
-import utils as utils
-# try:
-#     from build.Debug import generatedBoardEngineModuleName
-# except ModuleNotFoundError or ImportError:
-#     from build import generatedBoardEngineModuleName
+from GUI.board_display import BoardWindow  #TODO: uncomment , new_board
+import GUI.utils as utils
+try:
+    from build.Debug import generatedBoardEngineModuleName
+except ModuleNotFoundError or ImportError:
+    from build import generatedBoardEngineModuleName
 
 WIDTH=100
 HEIGHT=100
@@ -168,7 +168,7 @@ def new_board(states, height, width):
 
 def main():
     #game_engine = generatedBoardEngineModuleName.PySomeClass()
-    game_engine=2
+    game_engine="place holder"
     game = UserOptions(game_engine)
     while True:
         game.root.update()
