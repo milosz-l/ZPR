@@ -4,6 +4,7 @@ from tkinter import *
 from board_display import BoardWindow
 import random
 import utils
+from time import sleep
 
 WIDTH=100
 HEIGHT=100
@@ -19,9 +20,10 @@ class UserOptions:
         Creates a window for choosing a way to specify game parameters or an option
         to run with default parameters.
         Possible choices:
-            Start:  Starts a game with random parameters.
+            Start:  Starts a gamem if parameters are not provided, game runs with random parameters.
             Custom options: Redirects to a next window for typing custom parameters.
             Custome file:   Redirects to a next window for specifying a path to json file with parameters.
+            Close:  Closes all windows.
         """
         self.root = tk.Tk()
         self.start_frame = tk.Frame(self.root, width = width, height = height)
@@ -32,6 +34,8 @@ class UserOptions:
         option_btn.pack()
         file_btn = Button(self.start_frame,text = 'Custom file',  command=self.file_options)
         file_btn.pack()
+        stop_btn = Button(self.start_frame,text = 'Close',  command=self.stop)
+        stop_btn.pack()
         self.root.update()
 
     def options(self):
@@ -66,10 +70,10 @@ class UserOptions:
 
     def save_options(self):
         """
-        Saves custom options enetered by the user.
+        Saves custom options entered by the user.
         """
-        utils.OPTIONS.range=self.entry_range.get()
-        utils.OPTIONS.states = self.entry_states.get()
+        utils.OPTIONS.range= int(self.entry_range.get())
+        utils.OPTIONS.states = int(self.entry_states.get())
         utils.OPTIONS.mid = self.middle_opt.get()
         utils.OPTIONS.neighb = self.neighb_type.get()
         self.options_frame.pack_forget()
@@ -103,25 +107,20 @@ class UserOptions:
         """
         Starts game with random parameters.
         """
-        STATES = 12
-        height = 45
-        width = 60
-        self.board = BoardWindow(height, width, STATES)
+        self.board = BoardWindow(utils.OPTIONS.range, utils.OPTIONS.range, utils.OPTIONS.states)
         self.root.update()
-        self.run()
+        self.run(utils.OPTIONS.states, utils.OPTIONS.range, utils.OPTIONS.range)
 
-    def run(self):
+    def run(self, states, height, width):
         """
         Runs the game. Updates window with game display each time new board becomes available.
         """
-        STATES = 12
-        height = 45
-        width = 60
         while True:
-            new_version=new_board(STATES, height, width)
+            new_version=new_board(states, height, width)
             self.board.update(new_version)
             pygame.display.flip()
             self.root.update()
+            sleep(1)
 
     def stop(self):
         """
