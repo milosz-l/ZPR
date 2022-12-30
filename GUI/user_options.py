@@ -1,10 +1,14 @@
 import pygame
 import tkinter as tk
 from tkinter import *
-from board_display import BoardWindow
 import random
-import utils
 from time import sleep
+from GUI.board_display import BoardWindow
+import GUI.utils as utils
+try:
+    from build.Debug import generatedBoardEngineModuleName
+except ModuleNotFoundError or ImportError:
+    from build import generatedBoardEngineModuleName
 
 WIDTH=100
 HEIGHT=100
@@ -15,12 +19,12 @@ class UserOptions:
     """
     Class representing main window that enables user to choose and specify options for the game.
     """
-    def __init__(self, width: int=100, height: int=100):
+    def __init__(self, game_engine, width: int=100, height: int=100):
         """
         Creates a window for choosing a way to specify game parameters or an option
         to run with default parameters.
         Possible choices:
-            Start:  Starts a gamem if parameters are not provided, game runs with random parameters.
+            Start:  Starts a game if parameters are not provided, game runs with random parameters.
             Custom options: Redirects to a next window for typing custom parameters.
             Custome file:   Redirects to a next window for specifying a path to json file with parameters.
             Close:  Closes all windows.
@@ -36,6 +40,7 @@ class UserOptions:
         file_btn.pack()
         stop_btn = Button(self.start_frame,text = 'Close',  command=self.stop)
         stop_btn.pack()
+        self.engine = game_engine
         self.root.update()
 
     def options(self):
@@ -116,7 +121,7 @@ class UserOptions:
         Runs the game. Updates window with game display each time new board becomes available.
         """
         while True:
-            new_version=new_board(states, height, width)
+            new_version=new_board(states, height, width, self.game_engine)
             self.board.update(new_version)
             pygame.display.flip()
             self.root.update()
@@ -135,8 +140,10 @@ def new_board(states, height, width):
             board[y][x]=random.randint(0, states-1)
     return board
 
-game = UserOptions()
-while True:
-    game.root.update()
+def main():
+    game_engine = generatedBoardEngineModuleName.PySomeClass()
+    game = UserOptions(game_engine)
+    while True:
+        game.root.update()
 
 # https://stackoverflow.com/questions/23319059/embedding-a-pygame-window-into-a-tkinter-or-wxpython-frame
