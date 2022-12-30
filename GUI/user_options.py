@@ -3,12 +3,12 @@ import tkinter as tk
 from tkinter import *
 import random
 from time import sleep
-from GUI.board_display import BoardWindow  #TODO: uncomment , new_board
-import GUI.utils as utils
-try:
-    from build.Debug import generatedBoardEngineModuleName
-except ModuleNotFoundError or ImportError:
-    from build import generatedBoardEngineModuleName
+from board_display import BoardWindow  #TODO: uncomment , new_board
+import utils as utils
+# try:
+#     from build.Debug import generatedBoardEngineModuleName
+# except ModuleNotFoundError or ImportError:
+#     from build import generatedBoardEngineModuleName
 
 WIDTH=100
 HEIGHT=100
@@ -38,6 +38,8 @@ class UserOptions:
         option_btn.pack()
         file_btn = Button(self.start_frame,text = 'Custom file',  command=self.file_options)
         file_btn.pack()
+        sleep_btn = Button(self.start_frame,text = 'Sleep',  command=self.sleep_option)
+        sleep_btn.pack()
         stop_btn = Button(self.start_frame,text = 'Close',  command=self.stop)
         stop_btn.pack()
         self.game_engine = game_engine
@@ -107,6 +109,30 @@ class UserOptions:
         self.file_frame.pack_forget()
         self.start_frame.pack()
 
+    def sleep_option(self):
+        """
+        Window for manually specifying custom parameters.
+        Parameters to fill are: range, states, middle, neighbourhood type.
+        """
+        self.start_frame.pack_forget()
+        self.sleep_opt_frame = tk.Frame(self.root, width = WIDTH, height = HEIGHT)
+        self.sleep_opt = StringVar()
+        label_sleep_time=Label(self.sleep_opt_frame, text="Sleep in seconds", font=("Courier 12"))
+        label_sleep_time.pack()
+        self.entry_sleep_time=Entry(self.sleep_opt_frame, text="", bd=5)
+        self.entry_sleep_time.pack()
+        
+        self.sleep_opt_btn = Button(self.sleep_opt_frame,text = 'Done',  command=self.save_sleep)
+        self.sleep_opt_btn.pack(side=LEFT)
+        self.sleep_opt_frame.pack()
+
+    def save_sleep(self):
+        """
+        Saves custom options entered by the user.
+        """
+        utils.OPTIONS.sleep_time = float(self.entry_sleep_time.get())
+        self.sleep_opt_frame.pack_forget()
+        self.start_frame.pack()
 
     def start(self):
         """
@@ -125,7 +151,7 @@ class UserOptions:
             self.board.update(new_version)
             pygame.display.flip()
             self.root.update()
-            sleep(1)
+            sleep(utils.OPTIONS.sleep_time)
 
     def stop(self):
         """
@@ -141,9 +167,11 @@ def new_board(states, height, width):
     return board
 
 def main():
-    game_engine = generatedBoardEngineModuleName.PySomeClass()
+    #game_engine = generatedBoardEngineModuleName.PySomeClass()
+    game_engine=2
     game = UserOptions(game_engine)
     while True:
         game.root.update()
 
+main()
 # https://stackoverflow.com/questions/23319059/embedding-a-pygame-window-into-a-tkinter-or-wxpython-frame

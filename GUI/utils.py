@@ -4,7 +4,7 @@ class Params:
     """
     Class representing parameters required to the game
     """
-    def __init__(self, range: int = 6, states: int = 2, mid: bool = False, Smin: int=1, Smax: int=3, Bmin: int=2, Bmax: int=3, neighb: str="NN"):
+    def __init__(self, range: int = 6, states: int = 2, mid: bool = False, Smin: int=1, Smax: int=3, Bmin: int=2, Bmax: int=3, neighb: str="NN", sleep_time: int=1):
         """
         Args:
             range:      Range of the cells.
@@ -16,6 +16,7 @@ class Params:
             Bmax:       Maximum count limit for a dead cell to become a birth.
             neighb:     Extended neighborhood type.
                         Possible values: NN - von Neumann, NM - Moore.
+            sleep_time: Sleep time in seconds for changing game status.
         """
         self.range = range
         self.states = states
@@ -23,6 +24,7 @@ class Params:
         self.S = [Smin, Smax]
         self.B = [Bmin, Bmax]
         self.neighb = neighb
+        self.sleep_time = sleep_time
 
 def load_params(path: str) -> Params:
     """
