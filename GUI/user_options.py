@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import *
 import random
 from time import sleep
-from GUI.board_display import BoardWindow
+from GUI.board_display import BoardWindow, new_board
 import GUI.utils as utils
 try:
     from build.Debug import generatedBoardEngineModuleName
@@ -40,7 +40,7 @@ class UserOptions:
         file_btn.pack()
         stop_btn = Button(self.start_frame,text = 'Close',  command=self.stop)
         stop_btn.pack()
-        self.engine = game_engine
+        self.game_engine = game_engine
         self.root.update()
 
     def options(self):
@@ -133,12 +133,12 @@ class UserOptions:
         """
         pygame.quit()
 
-def new_board(states, height, width):
-    board = [[0 for _ in range(width)] for _ in range(height)]
-    for y in range(height):
-        for x in range(width):
-            board[y][x]=random.randint(0, states-1)
-    return board
+# def new_board(states, height, width):
+#     board = [[0 for _ in range(width)] for _ in range(height)]
+#     for y in range(height):
+#         for x in range(width):
+#             board[y][x]=random.randint(0, states-1)
+#     return board
 
 def main():
     game_engine = generatedBoardEngineModuleName.PySomeClass()
