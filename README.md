@@ -49,3 +49,6 @@ Larger than Life
 
 # Generate documentation
     doxygen config_doxygen
+
+
+for Ubuntu runs, ```sudo apt-get install python3-tk``` is required

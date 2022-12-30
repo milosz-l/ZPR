@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import *
 import random
 from time import sleep
-from GUI.board_display import BoardWindow, new_board
+from GUI.board_display import BoardWindow  #TODO: uncomment , new_board
 import GUI.utils as utils
 try:
     from build.Debug import generatedBoardEngineModuleName
@@ -121,7 +121,7 @@ class UserOptions:
         Runs the game. Updates window with game display each time new board becomes available.
         """
         while True:
-            new_version=new_board(states, height, width, self.game_engine)
+            new_version=new_board(states, height, width)   #TODO: pass as param - self.game_engine)
             self.board.update(new_version)
             pygame.display.flip()
             self.root.update()
@@ -133,12 +133,12 @@ class UserOptions:
         """
         pygame.quit()
 
-# def new_board(states, height, width):
-#     board = [[0 for _ in range(width)] for _ in range(height)]
-#     for y in range(height):
-#         for x in range(width):
-#             board[y][x]=random.randint(0, states-1)
-#     return board
+def new_board(states, height, width):
+    board = [[0 for _ in range(width)] for _ in range(height)]
+    for y in range(height):
+        for x in range(width):
+            board[y][x]=random.randint(0, states-1)
+    return board
 
 def main():
     game_engine = generatedBoardEngineModuleName.PySomeClass()
