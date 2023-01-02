@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import *
 import random
 from time import sleep
-from GUI.board_display import BoardWindow, new_board
+from GUI.board_display import BoardWindow  #TODO: uncomment , new_board
 import GUI.utils as utils
 try:
     from build.Debug import generatedBoardEngineModuleName
@@ -19,7 +19,7 @@ class UserOptions:
     """
     Class representing main window that enables user to choose and specify options for the game.
     """
-    def __init__(self, width: int=100, height: int=100):
+    def __init__(self, game_engine, width: int=100, height: int=100):
         """
         Creates a window for choosing a way to specify game parameters or an option
         to run with default parameters.
@@ -42,6 +42,7 @@ class UserOptions:
         sleep_btn.pack()
         stop_btn = Button(self.start_frame,text = 'Close',  command=self.stop)
         stop_btn.pack()
+        self.game_engine = game_engine
         self.root.update()
 
     def options(self):
@@ -145,9 +146,8 @@ class UserOptions:
         """
         Runs the game. Updates window with game display each time new board becomes available.
         """
-        game_engine = generatedBoardEngineModuleName.PySomeClass()
         while True:
-            new_version=new_board(states, height, width, game_engine)
+            new_version=new_board(states, height, width)   #TODO: pass as param - self.game_engine)
             self.board.update(new_version)
             pygame.display.flip()
             self.root.update()
@@ -159,8 +159,17 @@ class UserOptions:
         """
         pygame.quit()
 
+def new_board(states, height, width):
+    board = [[0 for _ in range(width)] for _ in range(height)]
+    for y in range(height):
+        for x in range(width):
+            board[y][x]=random.randint(0, states-1)
+    return board
+
 def main():
-    game = UserOptions()
+    #game_engine = generatedBoardEngineModuleName.PySomeClass()
+    game_engine="place holder"
+    game = UserOptions(game_engine)
     while True:
         game.root.update()
 
