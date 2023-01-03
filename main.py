@@ -6,7 +6,7 @@ def print_board(board):
         print(row)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # print(dir(generatedBoardEngineModuleName))
 
     # board = generatedBoardEngineModuleName.PySomeClass()

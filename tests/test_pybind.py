@@ -1,5 +1,6 @@
 import pytest
 from GUI.board_display import BoardWindow
+
 try:
     from build.Debug import generatedBoardEngineModuleName
 except ModuleNotFoundError or ImportError:
