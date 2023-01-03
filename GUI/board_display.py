@@ -1,8 +1,7 @@
-import pygame
-import random
 from time import sleep
-# import utils
 from typing import List
+import pygame
+
 try:
     from build.Debug import generatedBoardEngineModuleName
 except ModuleNotFoundError or ImportError:
@@ -16,7 +15,9 @@ class BoardWindow:
     Class representing a window with board to be displayed.
     """
 
-    def __init__(self, height: int, width: int, states: int, cell_size: int = CELL_SIZE):
+    def __init__(
+        self, height: int, width: int, states: int, cell_size: int = CELL_SIZE
+    ):
         """
         Args:
             height:     Height of the window.
@@ -40,11 +41,18 @@ class BoardWindow:
         """
         for y in range(self.height):
             for x in range(self.width):
-                new_rect = pygame.Rect(x*self.cell_size, y*self.cell_size, self.cell_size, self.cell_size)
+                new_rect = pygame.Rect(
+                    x * self.cell_size,
+                    y * self.cell_size,
+                    self.cell_size,
+                    self.cell_size,
+                )
                 pygame.draw.rect(self.window, self.colors[new_board[y][x]], new_rect)
 
 
-def new_board(states: int, height: int, width: int, engine: generatedBoardEngineModuleName) -> List[List[int]]:
+def new_board(
+    states: int, height: int, width: int, engine: generatedBoardEngineModuleName
+) -> List[List[int]]:
     """
     Generates new board with random cell states.
 
@@ -75,27 +83,27 @@ def define_colors(states: int) -> List[tuple]:
     Returns:
         List of colors (in RGB notation) for different states.
     """
-    COLORS = [(0, 0, 0) for _ in range(states)]
-    R, G, B = (0, 0, 0)
+    colors = [(0, 0, 0) for _ in range(states)]
+    r_col, g_col, b_col = (0, 0, 0)
     for i in range(states):
-        COLORS[i] = (R, G, B)
-        B += 255//(states-1)
-    return COLORS
+        colors[i] = (r_col, g_col, b_col)
+        b_col += 255 // (states - 1)
+    return colors
 
 
 def main():
     pygame.init()
-    STATES = 2  # TODO: get these values from engine
+    states = 2  # TODO: get these values from engine
     height = 30
     width = 30
-    board = BoardWindow(height, width, STATES)
+    board = BoardWindow(height, width, states)
     game_engine = generatedBoardEngineModuleName.PySomeClass()
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 return
-        new_version = new_board(STATES, height, width, game_engine)
+        new_version = new_board(states, height, width, game_engine)
         board.update(new_version)
         sleep(0.5)
         pygame.display.flip()

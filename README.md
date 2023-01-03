@@ -52,3 +52,11 @@ Larger than Life
 
 
 for Ubuntu runs, ```sudo apt-get install python3-tk``` is required
+
+Python code formatter - Black:
+```black .```
+
+TODO: pylint command
+Python linter - Pylint:
+```pylint ./GUI```
+```pylint ```
