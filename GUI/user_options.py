@@ -28,6 +28,8 @@ class UserOptions:
             Start:  Starts a game if parameters are not provided, game runs with random parameters.
             Custom options: Redirects to a window for typing custom parameters.
             Custome file:   Redirects to a window for specifying a path to json file with parameters.
+            Save board:     Saves current board to a PNG file.
+            Sleep:          TODO
             Close:  Closes all windows.
         """
         self.root = tk.Tk()
@@ -56,7 +58,10 @@ class UserOptions:
     def options(self):
         """
         Window for manually specifying custom parameters.
-        Parameters to fill are: range, states, middle, neighbourhood type.
+        Parameters to fill are: range, states, 
+        count limits for a state to survive,
+        count limits for a dead cell to become a birth,
+        middle, neighbourhood type.
         """
         self.start_frame.pack_forget()
         self.options_frame = tk.Frame(self.root, width=WIDTH, height=HEIGHT)
@@ -71,6 +76,22 @@ class UserOptions:
         label_states.pack()
         self.entry_states = tk.Entry(self.options_frame, text="", bd=5)
         self.entry_states.pack()
+        label_s_min = tk.Label(self.options_frame, text="Survive min", font=("Courier 12"))
+        label_s_min.pack()
+        self.entry_s_min = tk.Entry(self.options_frame, text="", bd=5)
+        self.entry_s_min.pack()
+        label_s_max = tk.Label(self.options_frame, text="Survive max", font=("Courier 12"))
+        label_s_max.pack()
+        self.entry_s_max = tk.Entry(self.options_frame, text="", bd=5)
+        self.entry_s_max.pack()
+        label_b_min = tk.Label(self.options_frame, text="Birth min", font=("Courier 12"))
+        label_b_min.pack()
+        self.entry_b_min = tk.Entry(self.options_frame, text="", bd=5)
+        self.entry_b_min.pack()
+        label_b_max = tk.Label(self.options_frame, text="Birth max", font=("Courier 12"))
+        label_b_max.pack()
+        self.entry_b_max = tk.Entry(self.options_frame, text="", bd=5)
+        self.entry_b_max.pack()
         choice_middle = tk.Radiobutton(
             self.options_frame, text="Middle", variable=self.middle_opt, value=1
         )
@@ -102,6 +123,8 @@ class UserOptions:
         """
         utils.OPTIONS.range = int(self.entry_range.get())
         utils.OPTIONS.states = int(self.entry_states.get())
+        utils.OPTIONS.s_range = [int(self.entry_s_min.get()), int(self.entry_s_max.get())]
+        utils.OPTIONS.b_range = [int(self.entry_b_min.get()), int(self.entry_b_max.get())]
         utils.OPTIONS.mid = self.middle_opt.get()
         utils.OPTIONS.neighb = self.neighb_type.get()
         self.options_frame.pack_forget()

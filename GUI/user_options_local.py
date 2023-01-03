@@ -3,13 +3,9 @@ import tkinter as tk
 from tkinter import *
 import random
 from time import sleep
-from GUI.board_display import BoardWindow  # TODO: uncomment , new_board
-import GUI.utils as utils
+from board_display import BoardWindow  # TODO: uncomment , new_board
+import utils as utils
 
-try:
-    from build.Debug import generatedBoardEngineModuleName
-except ModuleNotFoundError or ImportError:
-    from build import generatedBoardEngineModuleName
 
 WIDTH = 100
 HEIGHT = 100
@@ -69,6 +65,22 @@ class UserOptions:
         label_states.pack()
         self.entry_states = Entry(self.options_frame, text="", bd=5)
         self.entry_states.pack()
+        label_s_min = tk.Label(self.options_frame, text="Survive min", font=("Courier 12"))
+        label_s_min.pack()
+        self.entry_s_min = tk.Entry(self.options_frame, text="", bd=5)
+        self.entry_s_min.pack()
+        label_s_max = tk.Label(self.options_frame, text="Survive max", font=("Courier 12"))
+        label_s_max.pack()
+        self.entry_s_max = tk.Entry(self.options_frame, text="", bd=5)
+        self.entry_s_max.pack()
+        label_b_min = tk.Label(self.options_frame, text="Birth min", font=("Courier 12"))
+        label_b_min.pack()
+        self.entry_b_min = tk.Entry(self.options_frame, text="", bd=5)
+        self.entry_b_min.pack()
+        label_b_max = tk.Label(self.options_frame, text="Birth max", font=("Courier 12"))
+        label_b_max.pack()
+        self.entry_b_max = tk.Entry(self.options_frame, text="", bd=5)
+        self.entry_b_max.pack()
         choice_middle = Radiobutton(
             self.options_frame, text="Middle", variable=self.middle_opt, value=1
         )
@@ -100,8 +112,11 @@ class UserOptions:
         """
         utils.OPTIONS.range = int(self.entry_range.get())
         utils.OPTIONS.states = int(self.entry_states.get())
+        utils.OPTIONS.s_range = [int(self.entry_s_min.get()), int(self.entry_s_max.get())]
+        utils.OPTIONS.b_range = [int(self.entry_b_min.get()), int(self.entry_b_max.get())]
         utils.OPTIONS.mid = self.middle_opt.get()
         utils.OPTIONS.neighb = self.neighb_type.get()
+        print(utils.OPTIONS.s_range)
         self.options_frame.pack_forget()
         self.start_frame.pack()
 
