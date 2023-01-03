@@ -175,6 +175,7 @@ class UserOptions:
         while True:
             new_version = new_board(states, height, width, game_engine)
             self.board.update(new_version)
+            self.board.save_as_img()
             pygame.display.flip()
             self.root.update()
             sleep(utils.OPTIONS.sleep_time)
