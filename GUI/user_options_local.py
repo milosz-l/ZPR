@@ -3,13 +3,15 @@ import tkinter as tk
 from tkinter import messagebox
 import random
 from time import sleep
-from board_display import BoardWindow  # TODO: uncomment , new_board
+from board_display import BoardWindow
 import utils as utils
 
 
 WIDTH = 100
 HEIGHT = 100
 RANGE = 2
+
+SLEEP=0.5
 
 
 class UserOptions:
@@ -42,6 +44,8 @@ class UserOptions:
         file_btn.pack()
         sleep_btn = tk.Button(self.start_frame, text="Sleep", command=self.sleep_option)
         sleep_btn.pack()
+        resleep_btn = tk.Button(self.start_frame, text="Reset sleep", command=self.resleep)
+        resleep_btn.pack()
         stop_btn = tk.Button(self.start_frame, text="Close", command=self.stop)
         stop_btn.pack()
         self.game_engine = game_engine
@@ -198,6 +202,12 @@ class UserOptions:
         self.sleep_opt_frame.pack_forget()
         self.start_frame.pack()
 
+    def resleep(self):
+        """
+        Return to previous time setup.
+        """
+        utils.OPTIONS.sleep_time = SLEEP
+
     def start(self):
         """
         Starts game with random parameters.
@@ -206,6 +216,8 @@ class UserOptions:
             utils.OPTIONS.range, utils.OPTIONS.range, utils.OPTIONS.states
         )
         self.root.update()
+        #self.proc = Process(target=self.run, args=(utils.OPTIONS.states, utils.OPTIONS.range, utils.OPTIONS.range))
+        #self.proc.start()
         self.run(utils.OPTIONS.states, utils.OPTIONS.range, utils.OPTIONS.range)
 
     def run(self, states, height, width):
@@ -225,6 +237,7 @@ class UserOptions:
         """
         Stops the game and closes all windows.
         """
+        #self.proc.join()
         pygame.quit()
         self.root.quit()
 

@@ -21,7 +21,7 @@ except ModuleNotFoundError or ImportError: # pylint: disable=binary-op-exception
 WIDTH = 100
 HEIGHT = 100
 RANGE = 2
-
+SLEEP = 0.5
 
 class UserOptions:         # pylint: disable=too-many-instance-attributes,attribute-defined-outside-init
     """
@@ -59,6 +59,8 @@ class UserOptions:         # pylint: disable=too-many-instance-attributes,attrib
         img_btn.pack()
         sleep_btn = tk.Button(self.start_frame, text="Sleep", command=self.sleep_option)
         sleep_btn.pack()
+        resleep_btn = tk.Button(self.start_frame, text="Reset sleep", command=self.resleep)
+        resleep_btn.pack()
         stop_btn = tk.Button(self.start_frame, text="Close", command=self.stop)
         stop_btn.pack()
         self.root.update()
@@ -225,6 +227,12 @@ class UserOptions:         # pylint: disable=too-many-instance-attributes,attrib
         utils.OPTIONS.sleep_time = float(self.entry_sleep_time.get())
         self.sleep_opt_frame.pack_forget()
         self.start_frame.pack()
+
+    def resleep(self):
+        """
+        Return to previous time setup.
+        """
+        utils.OPTIONS.sleep_time = SLEEP
 
     def start(self):
         """
