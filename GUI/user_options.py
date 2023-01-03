@@ -128,19 +128,12 @@ class UserOptions:
         """
         try:
             utils.OPTIONS.range = int(self.entry_range.get())
-            if not (1 <= utils.OPTIONS.range <= 10):
-                error_msg("Incorrect data", "Range must be in [1, 10]")
             utils.OPTIONS.states = int(self.entry_states.get())
-            if not (1 <= utils.OPTIONS.states <= 25):
-                error_msg("Incorrect data", "States must be in [1, 25]")
             utils.OPTIONS.s_range = [int(self.entry_s_min.get()), int(self.entry_s_max.get())]
-            if not (1 <= utils.OPTIONS.s_range[0] <= 25) or not (1 <= utils.OPTIONS.s_range[1] <= 25):
-                error_msg("Incorrect data", "Survive count must be in [1, 25]")
             utils.OPTIONS.b_range = [int(self.entry_b_min.get()), int(self.entry_b_max.get())]
-            if not (1 <= utils.OPTIONS.b_range[0] <= 25) or not (1 <= utils.OPTIONS.b_range[1] <= 25):
-                error_msg("Incorrect data", "Birth count must be in [1, 25]")
             utils.OPTIONS.mid = self.middle_opt.get()
             utils.OPTIONS.neighb = self.neighb_type.get()
+            check_user_options()
         except ValueError:
             error_msg("Missing values", "All values must be provided.")
 
@@ -169,6 +162,7 @@ class UserOptions:
         """
         path = self.entry_filepath.get()
         utils.OPTIONS = utils.load_params(path)
+        check_user_options()
         self.file_frame.pack_forget()
         self.start_frame.pack()
 
@@ -237,9 +231,25 @@ class UserOptions:
         Stops the game and closes all windows.
         """
         pygame.quit()
+        self.root.quit()
+
 
 def error_msg(title, msg):
     messagebox.showerror(title, msg)
+
+def check_user_options():
+    """
+    Verifies values in options provided by the user.
+    In case of incorrect data, shows a pop up window with error.
+    """
+    if not (1 <= utils.OPTIONS.range <= 10):
+        error_msg("Incorrect data", "Range must be in [1, 10]")
+    if not (1 <= utils.OPTIONS.states <= 25):
+        error_msg("Incorrect data", "States must be in [1, 25]")   
+    if not (1 <= utils.OPTIONS.s_range[0] <= 25) or not (1 <= utils.OPTIONS.s_range[1] <= 25):
+        error_msg("Incorrect data", "Survive count must be in [1, 25]")
+    if not (1 <= utils.OPTIONS.b_range[0] <= 25) or not (1 <= utils.OPTIONS.b_range[1] <= 25):
+        error_msg("Incorrect data", "Birth count must be in [1, 25]")
 
 def main():
     game = UserOptions()
