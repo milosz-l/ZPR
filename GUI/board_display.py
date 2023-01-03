@@ -49,8 +49,8 @@ class BoardWindow:
                 )
                 pygame.draw.rect(self.window, self.colors[new_board[y][x]], new_rect)
 
-    def save_as_img(self):
-        pygame.image.save(self.window, "board1.png")
+    def save_as_img(self, name):
+        pygame.image.save(self.window, f"{name}.png")
 
 
 def new_board(

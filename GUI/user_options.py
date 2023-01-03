@@ -1,4 +1,5 @@
 import tkinter as tk
+from datetime import datetime
 from time import sleep
 import pygame
 from GUI.board_display import BoardWindow, new_board
@@ -42,6 +43,10 @@ class UserOptions:
             self.start_frame, text="Custom file", command=self.file_options
         )
         file_btn.pack()
+        img_btn = tk.Button(
+            self.start_frame, text="Save board", command=self.save_board
+        )
+        img_btn.pack()
         sleep_btn = tk.Button(self.start_frame, text="Sleep", command=self.sleep_option)
         sleep_btn.pack()
         stop_btn = tk.Button(self.start_frame, text="Close", command=self.stop)
@@ -127,6 +132,10 @@ class UserOptions:
         self.file_frame.pack_forget()
         self.start_frame.pack()
 
+    def save_board(self):
+        name = "board_" + datetime.now().strftime("%Y%m%d_%H%M")
+        self.board.save_as_img(name)
+
     def sleep_option(self):
         """
         Window for manually specifying custom parameters.
@@ -175,7 +184,6 @@ class UserOptions:
         while True:
             new_version = new_board(states, height, width, game_engine)
             self.board.update(new_version)
-            self.board.save_as_img()
             pygame.display.flip()
             self.root.update()
             sleep(utils.OPTIONS.sleep_time)
