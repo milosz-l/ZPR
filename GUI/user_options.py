@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 from datetime import datetime
 from time import sleep
 import pygame
@@ -120,13 +121,29 @@ class UserOptions:
     def save_options(self):
         """
         Saves custom options entered by the user.
+        If user provides incorrect values, an error message will be displayed.
+
+        Raises:
+            ValueError:     When one or more values are missing.
         """
-        utils.OPTIONS.range = int(self.entry_range.get())
-        utils.OPTIONS.states = int(self.entry_states.get())
-        utils.OPTIONS.s_range = [int(self.entry_s_min.get()), int(self.entry_s_max.get())]
-        utils.OPTIONS.b_range = [int(self.entry_b_min.get()), int(self.entry_b_max.get())]
-        utils.OPTIONS.mid = self.middle_opt.get()
-        utils.OPTIONS.neighb = self.neighb_type.get()
+        try:
+            utils.OPTIONS.range = int(self.entry_range.get())
+            if not (1 <= utils.OPTIONS.range <= 10):
+                error_msg("Incorrect data", "Range must be in [1, 10]")
+            utils.OPTIONS.states = int(self.entry_states.get())
+            if not (1 <= utils.OPTIONS.states <= 25):
+                error_msg("Incorrect data", "States must be in [1, 25]")
+            utils.OPTIONS.s_range = [int(self.entry_s_min.get()), int(self.entry_s_max.get())]
+            if not (1 <= utils.OPTIONS.s_range[0] <= 25) or not (1 <= utils.OPTIONS.s_range[1] <= 25):
+                error_msg("Incorrect data", "Survive count must be in [1, 25]")
+            utils.OPTIONS.b_range = [int(self.entry_b_min.get()), int(self.entry_b_max.get())]
+            if not (1 <= utils.OPTIONS.b_range[0] <= 25) or not (1 <= utils.OPTIONS.b_range[1] <= 25):
+                error_msg("Incorrect data", "Birth count must be in [1, 25]")
+            utils.OPTIONS.mid = self.middle_opt.get()
+            utils.OPTIONS.neighb = self.neighb_type.get()
+        except ValueError:
+            error_msg("Missing values", "All values must be provided.")
+
         self.options_frame.pack_forget()
         self.start_frame.pack()
 
@@ -156,6 +173,10 @@ class UserOptions:
         self.start_frame.pack()
 
     def save_board(self):
+        """
+        Saves currently displayed board as a PNG file.
+        Name of the file: board_{current_date_with_time}.
+        """
         name = "board_" + datetime.now().strftime("%Y%m%d_%H%M")
         self.board.save_as_img(name)
 
@@ -217,6 +238,8 @@ class UserOptions:
         """
         pygame.quit()
 
+def error_msg(title, msg):
+    messagebox.showerror(title, msg)
 
 def main():
     game = UserOptions()

@@ -2,10 +2,10 @@ from time import sleep
 from typing import List
 import pygame
 
-try:
-    from build.Debug import generatedBoardEngineModuleName
-except ModuleNotFoundError or ImportError:
-    from build import generatedBoardEngineModuleName
+# try:
+#     from build.Debug import generatedBoardEngineModuleName
+# except ModuleNotFoundError or ImportError:
+#     from build import generatedBoardEngineModuleName
 
 CELL_SIZE = 15
 
@@ -49,31 +49,33 @@ class BoardWindow:
                 )
                 pygame.draw.rect(self.window, self.colors[new_board[y][x]], new_rect)
 
-    def save_as_img(self, name):
+    def save_as_img(self, name: str) -> None:
+        """
+        Saves displayed board as PNG image.
+
+        Args:
+            name:   Desired name of the file.
+        """
         pygame.image.save(self.window, f"{name}.png")
 
 
-def new_board(
-    states: int, height: int, width: int, engine: generatedBoardEngineModuleName
-) -> List[List[int]]:
-    """
-    Generates new board with random cell states.
+# def new_board(
+#     states: int, height: int, width: int, engine: generatedBoardEngineModuleName
+# ) -> List[List[int]]:
+#     """
+#     Generates new board with random cell states.
 
-    Args:
-        states:     Number of cells' states.
-        height:     Height of the board.
-        width:      Width of the board.
-        engine:     Game engine written in C++
+#     Args:
+#         states:     Number of cells' states.
+#         height:     Height of the board.
+#         width:      Width of the board.
+#         engine:     Game engine written in C++
 
-    Returns:
-        A matrix with elements equivalent to given cell's state.
-    """
-    # board = [[0 for _ in range(width)] for _ in range(height)]
-    # for y in range(height):
-    #     for x in range(width):
-    #         board[y][x] = random.randint(0, states-1)
-    engine.calculate_next_state()
-    return engine.get_board()
+#     Returns:
+#         A matrix with elements equivalent to given cell's state.
+#     """
+#     engine.calculate_next_state()
+#     return engine.get_board()
 
 
 def define_colors(states: int) -> List[tuple]:

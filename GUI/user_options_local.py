@@ -1,6 +1,6 @@
 import pygame
 import tkinter as tk
-from tkinter import *
+from tkinter import messagebox
 import random
 from time import sleep
 from board_display import BoardWindow  # TODO: uncomment , new_board
@@ -30,19 +30,19 @@ class UserOptions:
         self.root = tk.Tk()
         self.start_frame = tk.Frame(self.root, width=width, height=height)
         self.start_frame.pack()
-        start_btn = Button(self.start_frame, text="Start", command=self.start)
+        start_btn = tk.Button(self.start_frame, text="Start", command=self.start)
         start_btn.pack()
-        option_btn = Button(
+        option_btn = tk.Button(
             self.start_frame, text="Custom options", command=self.options
         )
         option_btn.pack()
-        file_btn = Button(
+        file_btn = tk.Button(
             self.start_frame, text="Custom file", command=self.file_options
         )
         file_btn.pack()
-        sleep_btn = Button(self.start_frame, text="Sleep", command=self.sleep_option)
+        sleep_btn = tk.Button(self.start_frame, text="Sleep", command=self.sleep_option)
         sleep_btn.pack()
-        stop_btn = Button(self.start_frame, text="Close", command=self.stop)
+        stop_btn = tk.Button(self.start_frame, text="Close", command=self.stop)
         stop_btn.pack()
         self.game_engine = game_engine
         self.root.update()
@@ -54,16 +54,16 @@ class UserOptions:
         """
         self.start_frame.pack_forget()
         self.options_frame = tk.Frame(self.root, width=WIDTH, height=HEIGHT)
-        self.middle_opt = IntVar()
-        self.neighb_type = StringVar()
+        self.middle_opt = tk.IntVar()
+        self.neighb_type = tk.StringVar()
         self.neighb_type.set(None)
-        label_entry = Label(self.options_frame, text="Range", font=("Courier 12"))
+        label_entry = tk.Label(self.options_frame, text="Range", font=("Courier 12"))
         label_entry.pack()
-        self.entry_range = Entry(self.options_frame, text="", bd=5)
+        self.entry_range = tk.Entry(self.options_frame, text="", bd=5)
         self.entry_range.pack()
-        label_states = Label(self.options_frame, text="States", font=("Courier 12"))
+        label_states = tk.Label(self.options_frame, text="States", font=("Courier 12"))
         label_states.pack()
-        self.entry_states = Entry(self.options_frame, text="", bd=5)
+        self.entry_states = tk.Entry(self.options_frame, text="", bd=5)
         self.entry_states.pack()
         label_s_min = tk.Label(self.options_frame, text="Survive min", font=("Courier 12"))
         label_s_min.pack()
@@ -81,42 +81,57 @@ class UserOptions:
         label_b_max.pack()
         self.entry_b_max = tk.Entry(self.options_frame, text="", bd=5)
         self.entry_b_max.pack()
-        choice_middle = Radiobutton(
+        choice_middle = tk.Radiobutton(
             self.options_frame, text="Middle", variable=self.middle_opt, value=1
         )
         choice_middle.pack()
-        label_neighb = Label(
+        label_neighb = tk.Label(
             self.options_frame, text="Neighbourhood type", font=("Courier 12")
         )
         label_neighb.pack()
-        choice_neighb_NM = Radiobutton(
+        choice_neighb_NM = tk.Radiobutton(
             self.options_frame, text="Moore", variable=self.neighb_type, value="NM"
         )
         choice_neighb_NM.pack()
-        choice_neighb_NN = Radiobutton(
+        choice_neighb_NN = tk.Radiobutton(
             self.options_frame,
             text="von Neumann",
             variable=self.neighb_type,
             value="NN",
         )
         choice_neighb_NN.pack()
-        self.stop_btn = Button(
+        self.stop_btn = tk.Button(
             self.options_frame, text="Done", command=self.save_options
         )
-        self.stop_btn.pack(side=LEFT)
+        self.stop_btn.pack(side=tk.LEFT)
         self.options_frame.pack()
 
     def save_options(self):
         """
         Saves custom options entered by the user.
+        If user provides incorrect values, an error message will be displayed.
+
+        Raises:
+            ValueError:     When one or more values is missing.
         """
-        utils.OPTIONS.range = int(self.entry_range.get())
-        utils.OPTIONS.states = int(self.entry_states.get())
-        utils.OPTIONS.s_range = [int(self.entry_s_min.get()), int(self.entry_s_max.get())]
-        utils.OPTIONS.b_range = [int(self.entry_b_min.get()), int(self.entry_b_max.get())]
-        utils.OPTIONS.mid = self.middle_opt.get()
-        utils.OPTIONS.neighb = self.neighb_type.get()
-        print(utils.OPTIONS.s_range)
+        try:
+            utils.OPTIONS.range = int(self.entry_range.get())
+            if not (1 <= utils.OPTIONS.range <= 10):
+                error_msg("Incorrect data", "Range must be in [1, 10]")
+            utils.OPTIONS.states = int(self.entry_states.get())
+            if not (1 <= utils.OPTIONS.states <= 25):
+                error_msg("Incorrect data", "States must be in [1, 25]")
+            utils.OPTIONS.s_range = [int(self.entry_s_min.get()), int(self.entry_s_max.get())]
+            if not (1 <= utils.OPTIONS.s_range[0] <= 25) or not (1 <= utils.OPTIONS.s_range[1] <= 25):
+                error_msg("Incorrect data", "Survive count must be in [1, 25]")
+            utils.OPTIONS.b_range = [int(self.entry_b_min.get()), int(self.entry_b_max.get())]
+            if not (1 <= utils.OPTIONS.b_range[0] <= 25) or not (1 <= utils.OPTIONS.b_range[1] <= 25):
+                error_msg("Incorrect data", "Birth count must be in [1, 25]")
+            utils.OPTIONS.mid = self.middle_opt.get()
+            utils.OPTIONS.neighb = self.neighb_type.get()
+        except ValueError:
+            error_msg("Missing values", "All values must be provided.")
+
         self.options_frame.pack_forget()
         self.start_frame.pack()
 
@@ -125,14 +140,14 @@ class UserOptions:
         Window for entering a path to json file with custom parameters.
         """
         self.file_frame = tk.Frame(self.root, width=WIDTH, height=HEIGHT)
-        filepath_entry = Label(self.file_frame, text="File path", font=("Courier 12"))
+        filepath_entry = tk.Label(self.file_frame, text="File path", font=("Courier 12"))
         filepath_entry.pack()
-        self.entry_filepath = Entry(self.file_frame, text="", bd=5)
+        self.entry_filepath = tk.Entry(self.file_frame, text="", bd=5)
         self.entry_filepath.pack()
-        self.path_btn = Button(
+        self.path_btn = tk.Button(
             self.file_frame, text="Done", command=self.save_file_options
         )
-        self.path_btn.pack(side=LEFT)
+        self.path_btn.pack(side=tk.LEFT)
         self.start_frame.pack_forget()
         self.file_frame.pack()
 
@@ -152,18 +167,18 @@ class UserOptions:
         """
         self.start_frame.pack_forget()
         self.sleep_opt_frame = tk.Frame(self.root, width=WIDTH, height=HEIGHT)
-        self.sleep_opt = StringVar()
-        label_sleep_time = Label(
+        self.sleep_opt = tk.StringVar()
+        label_sleep_time = tk.Label(
             self.sleep_opt_frame, text="Sleep in seconds", font=("Courier 12")
         )
         label_sleep_time.pack()
-        self.entry_sleep_time = Entry(self.sleep_opt_frame, text="", bd=5)
+        self.entry_sleep_time = tk.Entry(self.sleep_opt_frame, text="", bd=5)
         self.entry_sleep_time.pack()
 
-        self.sleep_opt_btn = Button(
+        self.sleep_opt_btn = tk.Button(
             self.sleep_opt_frame, text="Done", command=self.save_sleep
         )
-        self.sleep_opt_btn.pack(side=LEFT)
+        self.sleep_opt_btn.pack(side=tk.LEFT)
         self.sleep_opt_frame.pack()
 
     def save_sleep(self):
@@ -203,6 +218,8 @@ class UserOptions:
         """
         pygame.quit()
 
+def error_msg(title, msg):
+    messagebox.showerror(title, msg)
 
 def new_board(states, height, width):
     board = [[0 for _ in range(width)] for _ in range(height)]
