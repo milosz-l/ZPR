@@ -65,19 +65,27 @@ class UserOptions:
         label_states.pack()
         self.entry_states = tk.Entry(self.options_frame, text="", bd=5)
         self.entry_states.pack()
-        label_s_min = tk.Label(self.options_frame, text="Survive min", font=("Courier 12"))
+        label_s_min = tk.Label(
+            self.options_frame, text="Survive min", font=("Courier 12")
+        )
         label_s_min.pack()
         self.entry_s_min = tk.Entry(self.options_frame, text="", bd=5)
         self.entry_s_min.pack()
-        label_s_max = tk.Label(self.options_frame, text="Survive max", font=("Courier 12"))
+        label_s_max = tk.Label(
+            self.options_frame, text="Survive max", font=("Courier 12")
+        )
         label_s_max.pack()
         self.entry_s_max = tk.Entry(self.options_frame, text="", bd=5)
         self.entry_s_max.pack()
-        label_b_min = tk.Label(self.options_frame, text="Birth min", font=("Courier 12"))
+        label_b_min = tk.Label(
+            self.options_frame, text="Birth min", font=("Courier 12")
+        )
         label_b_min.pack()
         self.entry_b_min = tk.Entry(self.options_frame, text="", bd=5)
         self.entry_b_min.pack()
-        label_b_max = tk.Label(self.options_frame, text="Birth max", font=("Courier 12"))
+        label_b_max = tk.Label(
+            self.options_frame, text="Birth max", font=("Courier 12")
+        )
         label_b_max.pack()
         self.entry_b_max = tk.Entry(self.options_frame, text="", bd=5)
         self.entry_b_max.pack()
@@ -117,8 +125,14 @@ class UserOptions:
         try:
             utils.OPTIONS.range = int(self.entry_range.get())
             utils.OPTIONS.states = int(self.entry_states.get())
-            utils.OPTIONS.s_range = [int(self.entry_s_min.get()), int(self.entry_s_max.get())]
-            utils.OPTIONS.b_range = [int(self.entry_b_min.get()), int(self.entry_b_max.get())]
+            utils.OPTIONS.s_range = [
+                int(self.entry_s_min.get()),
+                int(self.entry_s_max.get()),
+            ]
+            utils.OPTIONS.b_range = [
+                int(self.entry_b_min.get()),
+                int(self.entry_b_max.get()),
+            ]
             utils.OPTIONS.mid = self.middle_opt.get()
             utils.OPTIONS.neighb = self.neighb_type.get()
             check_user_options()
@@ -133,7 +147,9 @@ class UserOptions:
         Window for entering a path to json file with custom parameters.
         """
         self.file_frame = tk.Frame(self.root, width=WIDTH, height=HEIGHT)
-        filepath_entry = tk.Label(self.file_frame, text="File path", font=("Courier 12"))
+        filepath_entry = tk.Label(
+            self.file_frame, text="File path", font=("Courier 12")
+        )
         filepath_entry.pack()
         self.entry_filepath = tk.Entry(self.file_frame, text="", bd=5)
         self.entry_filepath.pack()
@@ -212,18 +228,25 @@ class UserOptions:
         pygame.quit()
         self.root.quit()
 
+
 def error_msg(title, msg):
     messagebox.showerror(title, msg)
+
 
 def check_user_options():
     if not (1 <= utils.OPTIONS.range <= 10):
         error_msg("Incorrect data", "Range must be in [1, 10]")
     if not (1 <= utils.OPTIONS.states <= 25):
-        error_msg("Incorrect data", "States must be in [1, 25]")   
-    if not (1 <= utils.OPTIONS.s_range[0] <= 25) or not (1 <= utils.OPTIONS.s_range[1] <= 25):
+        error_msg("Incorrect data", "States must be in [1, 25]")
+    if not (1 <= utils.OPTIONS.s_range[0] <= 25) or not (
+        1 <= utils.OPTIONS.s_range[1] <= 25
+    ):
         error_msg("Incorrect data", "Survive count must be in [1, 25]")
-    if not (1 <= utils.OPTIONS.b_range[0] <= 25) or not (1 <= utils.OPTIONS.b_range[1] <= 25):
+    if not (1 <= utils.OPTIONS.b_range[0] <= 25) or not (
+        1 <= utils.OPTIONS.b_range[1] <= 25
+    ):
         error_msg("Incorrect data", "Birth count must be in [1, 25]")
+
 
 def new_board(states, height, width):
     board = [[0 for _ in range(width)] for _ in range(height)]

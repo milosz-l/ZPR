@@ -1,14 +1,21 @@
+"""
+    Module responsible for the GUI:
+    - menu with game's options
+    - gathering custom game options
+    - running main pygame window with board
+"""
+
 import tkinter as tk
 from tkinter import messagebox
 from datetime import datetime
 from time import sleep
 import pygame
 from GUI.board_display import BoardWindow, new_board
-import GUI.utils as utils
+from GUI import utils
 
 try:
     from build.Debug import generatedBoardEngineModuleName
-except ModuleNotFoundError or ImportError:
+except ModuleNotFoundError or ImportError: # pylint: disable=binary-op-exception
     from build import generatedBoardEngineModuleName
 
 WIDTH = 100
@@ -16,7 +23,7 @@ HEIGHT = 100
 RANGE = 2
 
 
-class UserOptions:
+class UserOptions:         # pylint: disable=too-many-instance-attributes,attribute-defined-outside-init
     """
     Class representing main window that enables user to choose and specify options for the game.
     """
@@ -28,7 +35,7 @@ class UserOptions:
         Possible choices:
             Start:  Starts a game if parameters are not provided, game runs with random parameters.
             Custom options: Redirects to a window for typing custom parameters.
-            Custome file:   Redirects to a window for specifying a path to json file with parameters.
+            Custome file:   Redirects to a window for specifying path to json file with parameters.
             Save board:     Saves current board to a PNG file.
             Sleep:          TODO
             Close:  Closes all windows.
@@ -59,7 +66,7 @@ class UserOptions:
     def options(self):
         """
         Window for manually specifying custom parameters.
-        Parameters to fill are: range, states, 
+        Parameters to fill are: range, states,
         count limits for a state to survive,
         count limits for a dead cell to become a birth,
         middle, neighbourhood type.
@@ -77,19 +84,27 @@ class UserOptions:
         label_states.pack()
         self.entry_states = tk.Entry(self.options_frame, text="", bd=5)
         self.entry_states.pack()
-        label_s_min = tk.Label(self.options_frame, text="Survive min", font=("Courier 12"))
+        label_s_min = tk.Label(
+            self.options_frame, text="Survive min", font=("Courier 12")
+        )
         label_s_min.pack()
         self.entry_s_min = tk.Entry(self.options_frame, text="", bd=5)
         self.entry_s_min.pack()
-        label_s_max = tk.Label(self.options_frame, text="Survive max", font=("Courier 12"))
+        label_s_max = tk.Label(
+            self.options_frame, text="Survive max", font=("Courier 12")
+        )
         label_s_max.pack()
         self.entry_s_max = tk.Entry(self.options_frame, text="", bd=5)
         self.entry_s_max.pack()
-        label_b_min = tk.Label(self.options_frame, text="Birth min", font=("Courier 12"))
+        label_b_min = tk.Label(
+            self.options_frame, text="Birth min", font=("Courier 12")
+        )
         label_b_min.pack()
         self.entry_b_min = tk.Entry(self.options_frame, text="", bd=5)
         self.entry_b_min.pack()
-        label_b_max = tk.Label(self.options_frame, text="Birth max", font=("Courier 12"))
+        label_b_max = tk.Label(
+            self.options_frame, text="Birth max", font=("Courier 12")
+        )
         label_b_max.pack()
         self.entry_b_max = tk.Entry(self.options_frame, text="", bd=5)
         self.entry_b_max.pack()
@@ -101,17 +116,17 @@ class UserOptions:
             self.options_frame, text="Neighbourhood type", font=("Courier 12")
         )
         label_neighb.pack()
-        choice_neighb_NM = tk.Radiobutton(
+        choice_neighb_nm = tk.Radiobutton(
             self.options_frame, text="Moore", variable=self.neighb_type, value="NM"
         )
-        choice_neighb_NM.pack()
-        choice_neighb_NN = tk.Radiobutton(
+        choice_neighb_nm.pack()
+        choice_neighb_nn = tk.Radiobutton(
             self.options_frame,
             text="von Neumann",
             variable=self.neighb_type,
             value="NN",
         )
-        choice_neighb_NN.pack()
+        choice_neighb_nn.pack()
         self.stop_btn = tk.Button(
             self.options_frame, text="Done", command=self.save_options
         )
@@ -129,8 +144,14 @@ class UserOptions:
         try:
             utils.OPTIONS.range = int(self.entry_range.get())
             utils.OPTIONS.states = int(self.entry_states.get())
-            utils.OPTIONS.s_range = [int(self.entry_s_min.get()), int(self.entry_s_max.get())]
-            utils.OPTIONS.b_range = [int(self.entry_b_min.get()), int(self.entry_b_max.get())]
+            utils.OPTIONS.s_range = [
+                int(self.entry_s_min.get()),
+                int(self.entry_s_max.get()),
+            ]
+            utils.OPTIONS.b_range = [
+                int(self.entry_b_min.get()),
+                int(self.entry_b_max.get()),
+            ]
             utils.OPTIONS.mid = self.middle_opt.get()
             utils.OPTIONS.neighb = self.neighb_type.get()
             check_user_options()
@@ -145,7 +166,9 @@ class UserOptions:
         Window for entering a path to json file with custom parameters.
         """
         self.file_frame = tk.Frame(self.root, width=WIDTH, height=HEIGHT)
-        filepath_entry = tk.Label(self.file_frame, text="File path", font=("Courier 12"))
+        filepath_entry = tk.Label(
+            self.file_frame, text="File path", font=("Courier 12")
+        )
         filepath_entry.pack()
         self.entry_filepath = tk.Entry(self.file_frame, text="", bd=5)
         self.entry_filepath.pack()
@@ -226,32 +249,46 @@ class UserOptions:
             self.root.update()
             sleep(utils.OPTIONS.sleep_time)
 
-    def stop(self):
+    def stop(self) -> None:
         """
         Stops the game and closes all windows.
         """
-        pygame.quit()
+        pygame.quit() # pylint: disable=no-member
         self.root.quit()
 
 
-def error_msg(title, msg):
+def error_msg(title: str, msg: str) -> None:
+    """
+    Shows pop up window with error message.
+
+    Args:
+        title:  Title of the error message.
+        msg:    Main text of error message.
+    """
     messagebox.showerror(title, msg)
 
-def check_user_options():
+
+def check_user_options() -> None:
     """
     Verifies values in options provided by the user.
     In case of incorrect data, shows a pop up window with error.
     """
-    if not (1 <= utils.OPTIONS.range <= 10):
+    if not 1 <= utils.OPTIONS.range <= 10:
         error_msg("Incorrect data", "Range must be in [1, 10]")
-    if not (1 <= utils.OPTIONS.states <= 25):
-        error_msg("Incorrect data", "States must be in [1, 25]")   
-    if not (1 <= utils.OPTIONS.s_range[0] <= 25) or not (1 <= utils.OPTIONS.s_range[1] <= 25):
+    if not 1 <= utils.OPTIONS.states <= 25:
+        error_msg("Incorrect data", "States must be in [1, 25]")
+    if not (1 <= utils.OPTIONS.s_range[0] <= 25) or not (
+        1 <= utils.OPTIONS.s_range[1] <= 25
+    ):
         error_msg("Incorrect data", "Survive count must be in [1, 25]")
-    if not (1 <= utils.OPTIONS.b_range[0] <= 25) or not (1 <= utils.OPTIONS.b_range[1] <= 25):
+    if not (1 <= utils.OPTIONS.b_range[0] <= 25) or not (
+        1 <= utils.OPTIONS.b_range[1] <= 25
+    ):
         error_msg("Incorrect data", "Birth count must be in [1, 25]")
 
+
 def main():
+    """Main function."""
     game = UserOptions()
     while True:
         game.root.update()

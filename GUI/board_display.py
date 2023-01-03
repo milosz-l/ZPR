@@ -1,10 +1,12 @@
+"""Module responsible for board display management and the class BoardWindow."""
+
 from time import sleep
 from typing import List
 import pygame
 
 try:
     from build.Debug import generatedBoardEngineModuleName
-except ModuleNotFoundError or ImportError:
+except ModuleNotFoundError or ImportError: # pylint: disable=binary-op-exception
     from build import generatedBoardEngineModuleName
 
 CELL_SIZE = 15
@@ -39,15 +41,15 @@ class BoardWindow:
         Args:
             new_board:  A matrix with elements equivalent to given cell's state.
         """
-        for y in range(self.height):
-            for x in range(self.width):
+        for y_val in range(self.height):
+            for x_val in range(self.width):
                 new_rect = pygame.Rect(
-                    x * self.cell_size,
-                    y * self.cell_size,
+                    x_val * self.cell_size,
+                    y_val * self.cell_size,
                     self.cell_size,
                     self.cell_size,
                 )
-                pygame.draw.rect(self.window, self.colors[new_board[y][x]], new_rect)
+                pygame.draw.rect(self.window, self.colors[new_board[y_val][x_val]], new_rect)
 
     def save_as_img(self, name: str) -> None:
         """
@@ -97,7 +99,7 @@ def define_colors(states: int) -> List[tuple]:
 
 
 def main():
-    pygame.init()
+    pygame.init()   # pylint: disable=no-member
     states = 2  # TODO: get these values from engine
     height = 30
     width = 30
@@ -105,8 +107,8 @@ def main():
     game_engine = generatedBoardEngineModuleName.PySomeClass()
     while True:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
+            if event.type == pygame.QUIT:   # pylint: disable=no-member
+                pygame.quit()               # pylint: disable=no-member
                 return
         new_version = new_board(states, height, width, game_engine)
         board.update(new_version)

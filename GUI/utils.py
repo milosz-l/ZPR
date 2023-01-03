@@ -1,7 +1,11 @@
+"""
+    Module responsible for a class with game's parameters.
+"""
+
 import json
 
 
-class Params:
+class Params:           # pylint: disable=too-few-public-methods
     """
     Class representing parameters required to the game
     """
@@ -17,7 +21,7 @@ class Params:
         b_max: int = 3,
         neighb: str = "NN",
         sleep_time: int = 1,
-    ): #pylint: disable=too-many-arguments
+    ):  # pylint: disable=too-many-arguments,redefined-builtin
         """
         Args:
             range:      Range of the cells.
@@ -51,19 +55,14 @@ def load_params(path: str) -> Params:
         Object of type Params with parameters extracted from the file.
     """
     params = Params()
-    with open(path) as f:
-        data = json.loads(f.read())
+    with open(path, encoding="utf-8") as file:
+        data = json.loads(file.read())
         Params.range = data["range"]
         Params.states = data["states"]
         Params.mid = data["middle"]
-        Params.S = [data["s_min"], data["s_max"]]
-        Params.B = [data["b_min"], data["b_max"]]
+        Params.s_range = [data["s_min"], data["s_max"]]
+        Params.b_range = [data["b_min"], data["b_max"]]
         Params.neighb = data["neighbourhood"]
     return params
 
-
-path = "example_params.json"
-
-# print(load_params(path).range)
-# TODO: required? global OPTIONS
 OPTIONS = Params()
