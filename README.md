@@ -3,7 +3,13 @@ Larger than Life
 
 # How to install and run
 
-## using pip (preferred)
+## general instructions
+1. clone pybind11 repository from github (`git clone https://github.com/pybind/pybind11.git`)
+2. install requirements (`pip install -r requirements.txt`)
+3. configure and build cmake
+4. run main.py (`python main.py`)
+
+## example using pip (preferred)
     git clone https://github.com/pybind/pybind11.git
     pip install -r requirements.txt
     mkdir build
@@ -13,7 +19,7 @@ Larger than Life
     cd ..
     python main.py `or` python3 main.py `or` python3.9 main.py
 
-## using conda
+## example using conda
     git clone https://github.com/pybind/pybind11.git
     conda env create -f zpr_ltl_conda_env.yml -n ltl
     conda activate ltl
@@ -27,7 +33,7 @@ Larger than Life
 
 # Run tests
 
-## using pip (preferred)
+## example using pip (preferred)
     git clone https://github.com/pybind/pybind11.git
     pip install -r requirements.txt
     mkdir build
@@ -38,7 +44,7 @@ Larger than Life
     touch build/__init__.py
     pytest tests/
 
-## using conda
+## example using conda
     git clone https://github.com/pybind/pybind11.git
     conda env create -f zpr_ltl_conda_env.yml -n ltl
     conda activate ltl
