@@ -101,10 +101,6 @@ int BoardEngine::add_bias_to_coordinate(int bias, int coordinate, int max_coordi
 	}
 }
 
-// int BoardEngine::count_neighbours_in_row(int row_num, int col_num, int bias) const {
-// 	// TODO - remove this function
-// }
-
 bool BoardEngine::cell_in_neighbourhood(int current_row, int current_col, int center_row, int center_col) const {
 	// return whether a (current_row, current_col) cell should be counted as a neighbor of (center_row, center_col) cell
 	// type of neighborhood is defined in GameParameters
@@ -139,10 +135,6 @@ int BoardEngine::count_neighbours(int row_num, int col_num, int max_num_of_neigh
 				return max_num_of_neighbours + 1;
 			}
 		}
-		// count += count_neighbours_in_row(row_num, col_num, parameters.range);
-		// if (count > max_num_of_neighbours) {
-		// 	return max_num_of_neighbours + 1;
-		// }
 	}
 	if (!parameters.count_middle) {
 		--count;

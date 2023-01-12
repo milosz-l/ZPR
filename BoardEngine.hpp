@@ -40,7 +40,6 @@ class BoardEngine {
 	bool cell_is_dead(CellValue) const;
 	bool cell_is_alive(CellValue) const;
 	int add_bias_to_coordinate(int bias, int coordinate, int max_coordinate_value) const;
-	// int count_neighbours_in_row(int row_num, int col_num, int bias) const;
 	bool BoardEngine::cell_in_neighbourhood(int current_row, int current_col, int center_row, int center_col) const;
 	int count_neighbours(int row_num, int col_num, int max_num_of_neighbours) const;
 	bool dead_cell_should_be_born(int row_num, int col_num) const;
