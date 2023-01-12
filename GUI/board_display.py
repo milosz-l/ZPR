@@ -6,7 +6,7 @@ import pygame
 
 try:
     from build.Debug import generatedBoardEngineModuleName
-except ModuleNotFoundError or ImportError: # pylint: disable=binary-op-exception
+except ModuleNotFoundError or ImportError:  # pylint: disable=binary-op-exception
     from build import generatedBoardEngineModuleName
 
 CELL_SIZE = 15
@@ -61,16 +61,30 @@ class BoardWindow:
         pygame.image.save(self.window, f"{name}.png")
 
 
-def new_board(
-    states: int, height: int, width: int, engine: generatedBoardEngineModuleName
+def randomize_board(
+    engine: generatedBoardEngineModuleName, num_of_random_cells: int
 ) -> List[List[int]]:
     """
-    Generates new board with random cell states.
+    Returns board with given number of randomized cells
 
     Args:
-        states:     Number of cells' states.
-        height:     Height of the board.
-        width:      Width of the board.
+        engine:     Game engine written in C++
+        num_of_random_cells:    How many cells to randomize
+
+    Returns:
+        A matrix with elements equivalent to given cell's state.
+    """
+    engine.randomize_board(num_of_random_cells)
+    return engine.get_board()
+
+
+def calculate_next_state(
+    engine: generatedBoardEngineModuleName
+) -> List[List[int]]:
+    """
+    Returns next state of the board.
+
+    Args:
         engine:     Game engine written in C++
 
     Returns:
@@ -105,12 +119,18 @@ def main():
     width = 30
     board = BoardWindow(height, width, states)
     game_engine = generatedBoardEngineModuleName.PySomeClass()
+
+    # set cells for testing
+    game_engine.set_cell(2, 2, 1)
+    game_engine.set_cell(3, 3, 1)
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:   # pylint: disable=no-member
                 pygame.quit()               # pylint: disable=no-member
                 return
-        new_version = new_board(states, height, width, game_engine)
+        # new_version = randomize_board(game_engine, num_of_random_cells=width*2)
+        new_version = calculate_next_state(game_engine)
         board.update(new_version)
         sleep(0.5)
         pygame.display.flip()

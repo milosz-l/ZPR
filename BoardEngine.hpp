@@ -32,6 +32,8 @@ class BoardEngine {
 	void set_cell(int row_num, int col_num, int new_value);
 	void print_current_board() const;
 	Board get_board() const;
+	void change_random_cell();
+	void randomize_board(int num_of_random_cells);
 	void calculate_next_state();
 
    private:
