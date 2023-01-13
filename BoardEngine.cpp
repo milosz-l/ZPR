@@ -3,6 +3,8 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
+#include <iostream>
+
 // #include <cstdlib>
 
 namespace py = pybind11;
@@ -65,7 +67,9 @@ void BoardEngine::calculate_next_state() {
 					current_board[row_num][col_num] = 1;  // set cell's value to alive
 				}
 			} else if (cell_value > 1 || state_one_cell_should_survive(row_num, col_num)) {
-				if (previous_board[row_num][col_num] + 1 == parameters.count_of_states) {
+				++current_board[row_num][col_num];
+				std::cout << "++current_board[][]\n";
+				if (current_board[row_num][col_num] >= parameters.count_of_states) {
 					current_board[row_num][col_num] = 0;
 				}
 			}
@@ -93,7 +97,7 @@ int BoardEngine::add_bias_to_coordinate(int bias, int coordinate, int max_coordi
 	// returns a coordinate with added bias (adjusts range if needed)
 	int new_coordinate = coordinate + bias;
 	if (new_coordinate < 0) {
-		return 0
+		return 0;
 	} else if (new_coordinate > max_coordinate_value - 1) {
 		return max_coordinate_value - 1;
 	} else {
@@ -136,9 +140,11 @@ int BoardEngine::count_neighbours(int row_num, int col_num, int max_num_of_neigh
 			}
 		}
 	}
-	if (!parameters.count_middle) {
+	if (!parameters.count_middle && cell_is_alive(previous_board[row_num][col_num])) {
 		--count;
 	}
+	std::cout << "count of neighbours for" << row_num << ", " << col_num << " equals: " << count << "\n";
+	assert(count >= 0);
 	return count;
 }
 

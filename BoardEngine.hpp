@@ -3,7 +3,7 @@
 #include <array>
 #include <iostream>
 
-const int NUM_OF_ROWS = 30;
+const int NUM_OF_ROWS = 4;
 const int NUM_OF_COLS = NUM_OF_ROWS;
 
 struct GameParameters {
