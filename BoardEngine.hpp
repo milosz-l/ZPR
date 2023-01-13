@@ -22,13 +22,15 @@ typedef std::array<CellValue, NUM_OF_COLS> Row;
 typedef std::array<Row, NUM_OF_ROWS> Board;
 
 class BoardEngine {
-	const GameParameters parameters;
+	GameParameters parameters;
 	Board current_board;
 	Board previous_board;
 
    public:
 	BoardEngine();
 	BoardEngine(const Board &starting_board);
+	BoardEngine(const GameParameters &user_parameters);
+	BoardEngine(const GameParameters &user_parameters, const Board &starting_board);
 	void set_cell(int row_num, int col_num, int new_value);
 	void print_current_board() const;
 	Board get_board() const;

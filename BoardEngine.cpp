@@ -21,6 +21,17 @@ BoardEngine::BoardEngine(const Board &starting_board) {
 	this->current_board = starting_board;
 }
 
+BoardEngine::BoardEngine(const GameParameters &user_parameters) {
+	// set parameters to parameters given as an argument
+	this->parameters = user_parameters;
+}
+
+BoardEngine::BoardEngine(const GameParameters &user_parameters, const Board &starting_board) {
+	// set parameters and board to those given as parameters
+	this->parameters = user_parameters;
+	this->current_board = starting_board;
+}
+
 void BoardEngine::set_cell(int row_num, int col_num, int new_value) {
 	// sets cell with given coordinates to given state
 	this->current_board[row_num][col_num] = new_value;
