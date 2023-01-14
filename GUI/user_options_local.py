@@ -302,9 +302,8 @@ def new_board(states, height, width):
 
 
 def main():
-    # game_engine = generatedBoardEngineModuleName.PySomeClass()
-    game_engine = "place holder"
-    game = UserOptions(game_engine)
+    """Main function."""
+    game = UserOptions()
     while True:
         game.root.update()
 
