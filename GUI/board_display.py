@@ -119,11 +119,11 @@ def define_colors(states: int) -> List[tuple]:
 def main():
     pygame.init()   # pylint: disable=no-member
     states = 5  # TODO: get these values from engine
-    height = 4
-    width = height
-    board = BoardWindow(height, width, states)
     game_engine = generatedBoardEngineModuleName.PySomeClass()
     game_engine.set_parameters(1, states, False, 2, 3, 3, 3, True)
+    height = game_engine.get_height()
+    width = game_engine.get_width()
+    board = BoardWindow(height, width, states)
 
     # set cells for testing
     game_engine.set_cell(1, 2, 1)

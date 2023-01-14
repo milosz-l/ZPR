@@ -36,6 +36,16 @@ class BoardEngine {
 	void set_cell(int row_num, int col_num, int new_value);
 	void print_current_board() const;
 	Board get_board() const;
+	int get_height() const;
+	int get_width() const;
+	int get_range() const;
+	int get_count_of_states() const;
+	bool get_count_middle() const;
+	int get_alive_min() const;
+	int get_alive_max() const;
+	int get_be_born_min() const;
+	int get_be_born_max() const;
+	bool get_neighbourhood_type_is_moore() const;
 	void change_random_cell();
 	void randomize_board(int num_of_random_cells);
 	void calculate_next_state();

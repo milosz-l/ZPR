@@ -74,6 +74,46 @@ Board BoardEngine::get_board() const {
 	return this->current_board;
 }
 
+int BoardEngine::get_height() const {
+	return NUM_OF_ROWS;
+}
+
+int BoardEngine::get_width() const {
+	return NUM_OF_COLS;
+}
+
+int BoardEngine::get_range() const {
+	return parameters.range;
+}
+
+int BoardEngine::get_count_of_states() const {
+	return parameters.count_of_states;
+}
+
+bool BoardEngine::get_count_middle() const {
+	return parameters.count_middle;
+}
+
+int BoardEngine::get_alive_min() const {
+	return parameters.alive_min;
+}
+
+int BoardEngine::get_alive_max() const {
+	return parameters.alive_max;
+}
+
+int BoardEngine::get_be_born_min() const {
+	return parameters.be_born_min;
+}
+
+int BoardEngine::get_be_born_max() const {
+	return parameters.be_born_max;
+}
+
+bool BoardEngine::get_neighbourhood_type_is_moore() const {
+	return parameters.neighborhood_type_is_moore;
+}
+
 void BoardEngine::change_random_cell() {
 	// set random cell to random state
 	int random_cell_row = get_random_number_from_range(0, NUM_OF_ROWS - 1);
@@ -226,6 +266,16 @@ PYBIND11_MODULE(generatedBoardEngineModuleName, handle) {
 		.def("set_cell", &BoardEngine::set_cell)
 		.def("print_current_board", &BoardEngine::print_current_board)
 		.def("get_board", &BoardEngine::get_board)
+		.def("get_height", &BoardEngine::get_height)
+		.def("get_width", &BoardEngine::get_width)
+		.def("get_range", &BoardEngine::get_range)	// TODO: maybe remove these params getters
+		.def("get_count_of_states", &BoardEngine::get_count_of_states)
+		.def("get_count_middle", &BoardEngine::get_count_middle)
+		.def("get_alive_min", &BoardEngine::get_alive_min)
+		.def("get_alive_max", &BoardEngine::get_alive_max)
+		.def("get_be_born_min", &BoardEngine::get_be_born_min)
+		.def("get_be_born_max", &BoardEngine::get_be_born_max)
+		.def("get_neighbourhood_type_is_moore", &BoardEngine::get_neighbourhood_type_is_moore)
 		.def("randomize_board", &BoardEngine::randomize_board)
 		.def("calculate_next_state", &BoardEngine::calculate_next_state);
 }
