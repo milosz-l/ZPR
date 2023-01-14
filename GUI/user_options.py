@@ -290,6 +290,7 @@ class UserOptions:         # pylint: disable=too-many-instance-attributes,attrib
         # game_engine.set_cell(3, 2, 1)
 
         while True:
+            pygame.event.get()
             self.board.update(game_engine.get_board())
             pygame.display.flip()
             self.root.update()
