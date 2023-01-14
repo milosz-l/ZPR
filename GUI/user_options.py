@@ -21,7 +21,7 @@ except ModuleNotFoundError or ImportError:  # pylint: disable=binary-op-exceptio
 WIDTH = 100
 HEIGHT = 100
 BOARD_SIZE = 50  # TODO: get this from cpp or the other way
-RANGE = 2  # TODO: get this from cpp or the other way
+# RANGE = 1  # TODO: get this from cpp or the other way
 SLEEP = 0.5
 
 
@@ -287,6 +287,7 @@ class UserOptions:         # pylint: disable=too-many-instance-attributes,attrib
         game_engine.set_cell(2, 1, 1)
         game_engine.set_cell(2, 2, 1)
         game_engine.set_cell(3, 3, 1)
+        # game_engine.set_cell(3, 2, 1)
 
         while True:
             self.board.update(game_engine.get_board())

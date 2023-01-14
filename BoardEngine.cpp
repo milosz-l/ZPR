@@ -138,7 +138,7 @@ void BoardEngine::calculate_next_state() {
 	previous_board = current_board;
 	for (int row_num = 0; row_num < NUM_OF_ROWS; ++row_num) {
 		for (int col_num = 0; col_num < NUM_OF_COLS; ++col_num) {
-			CellValue cell_value = current_board[row_num][col_num];
+			CellValue cell_value = previous_board[row_num][col_num];
 			// if (cell_is_dead(cell_value)) {
 			// 	if (dead_cell_should_be_born(row_num, col_num)) {
 			// 		current_board[row_num][col_num] = 1;  // set cell's value to alive
