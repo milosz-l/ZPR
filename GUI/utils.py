@@ -12,14 +12,14 @@ class Params:           # pylint: disable=too-few-public-methods
 
     def __init__(
         self,
-        range: int = 6,
+        range: int = 1,
         states: int = 2,
         mid: bool = False,
-        s_min: int = 1,
+        s_min: int = 2,
         s_max: int = 3,
-        b_min: int = 2,
+        b_min: int = 3,
         b_max: int = 3,
-        neighb: str = "NN",
+        neighb: str = "NM",
         sleep_time: int = 1,
     ):  # pylint: disable=too-many-arguments,redefined-builtin
         """

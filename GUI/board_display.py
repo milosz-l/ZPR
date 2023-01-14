@@ -9,7 +9,7 @@ try:
 except ModuleNotFoundError or ImportError:  # pylint: disable=binary-op-exception
     from build import generatedBoardEngineModuleName
 
-CELL_SIZE = 15
+CELL_SIZE = 12
 
 
 class BoardWindow:

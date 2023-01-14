@@ -1,10 +1,10 @@
 {
-    "range": "4",
+    "range": "1",
     "states": "2",
     "middle": "False",
-    "Smin": "1",
-    "Smax": "4",
-    "Bmin": "1",
+    "Smin": "2",
+    "Smax": "3",
+    "Bmin": "3",
     "Bmax": "3",
-    "neighbourhood": "NN"
+    "neighbourhood": "NM"
 }

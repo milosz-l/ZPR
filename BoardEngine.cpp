@@ -21,31 +21,35 @@ BoardEngine::BoardEngine(const Board &starting_board) {
 	this->current_board = starting_board;
 }
 
-BoardEngine::BoardEngine(const GameParameters &user_parameters) {
-	// set parameters to parameters given as an argument
-	this->parameters = user_parameters;
-}
+// BoardEngine::BoardEngine(const GameParameters &user_parameters) {
+// 	// set parameters to parameters given as an argument
+// 	this->parameters = user_parameters;
+// }
 
-BoardEngine::BoardEngine(const GameParameters &user_parameters, const Board &starting_board) {
-	// set parameters and board to those given as parameters
-	this->parameters = user_parameters;
-	this->current_board = starting_board;
-}
+// BoardEngine::BoardEngine(const GameParameters &user_parameters, const Board &starting_board) {
+// 	// set parameters and board to those given as parameters
+// 	this->parameters = user_parameters;
+// 	this->current_board = starting_board;
+// }
 
-BoardEngine::BoardEngine(const int Rr, const int Cc, const bool Mm, const int Smin, const int Smax, const int Bmin, const int Bmax, const std::string Nn) {
-	parameters.range = Rr;
-	parameters.count_of_states = Cc;
-	parameters.count_middle = Mm;
-	parameters.alive_min = Smin;
-	parameters.alive_max = Smax;
-	parameters.be_born_min = Bmin;
-	parameters.be_born_max = Bmax;
-	parameters.neighb = Nn;
-}
+// BoardEngine::BoardEngine(const int Rr, const int Cc, const bool Mm, const int Smin, const int Smax, const int Bmin, const int Bmax, const std::string Nn) {
+// 	parameters.range = Rr;
+// 	parameters.count_of_states = Cc;
+// 	parameters.count_middle = Mm;
+// 	parameters.alive_min = Smin;
+// 	parameters.alive_max = Smax;
+// 	parameters.be_born_min = Bmin;
+// 	parameters.be_born_max = Bmax;
+// 	parameters.neighb = Nn;
+// }
 
 void BoardEngine::set_parameters(const int Rr, const int Cc, const bool Mm, const int Smin, const int Smax, const int Bmin, const int Bmax, const std::string Nn) {
 	parameters.range = Rr;
-	parameters.count_of_states = Cc;
+	if (Cc <= 2) {
+		parameters.count_of_states = 2;	 // convert Cc 0 or 1 to 2
+	} else {
+		parameters.count_of_states = Cc;
+	}
 	parameters.count_middle = Mm;
 	parameters.alive_min = Smin;
 	parameters.alive_max = Smax;
@@ -82,37 +86,37 @@ int BoardEngine::get_width() const {
 	return NUM_OF_COLS;
 }
 
-int BoardEngine::get_range() const {
-	return parameters.range;
-}
+// int BoardEngine::get_range() const {
+// 	return parameters.range;
+// }
 
-int BoardEngine::get_count_of_states() const {
-	return parameters.count_of_states;
-}
+// int BoardEngine::get_count_of_states() const {
+// 	return parameters.count_of_states;
+// }
 
-bool BoardEngine::get_count_middle() const {
-	return parameters.count_middle;
-}
+// bool BoardEngine::get_count_middle() const {
+// 	return parameters.count_middle;
+// }
 
-int BoardEngine::get_alive_min() const {
-	return parameters.alive_min;
-}
+// int BoardEngine::get_alive_min() const {
+// 	return parameters.alive_min;
+// }
 
-int BoardEngine::get_alive_max() const {
-	return parameters.alive_max;
-}
+// int BoardEngine::get_alive_max() const {
+// 	return parameters.alive_max;
+// }
 
-int BoardEngine::get_be_born_min() const {
-	return parameters.be_born_min;
-}
+// int BoardEngine::get_be_born_min() const {
+// 	return parameters.be_born_min;
+// }
 
-int BoardEngine::get_be_born_max() const {
-	return parameters.be_born_max;
-}
+// int BoardEngine::get_be_born_max() const {
+// 	return parameters.be_born_max;
+// }
 
-std::string BoardEngine::get_neighb() const {
-	return parameters.neighb;
-}
+// std::string BoardEngine::get_neighb() const {
+// 	return parameters.neighb;
+// }
 
 void BoardEngine::change_random_cell() {
 	// set random cell to random state
@@ -135,17 +139,38 @@ void BoardEngine::calculate_next_state() {
 	for (int row_num = 0; row_num < NUM_OF_ROWS; ++row_num) {
 		for (int col_num = 0; col_num < NUM_OF_COLS; ++col_num) {
 			CellValue cell_value = current_board[row_num][col_num];
+			// if (cell_is_dead(cell_value)) {
+			// 	if (dead_cell_should_be_born(row_num, col_num)) {
+			// 		current_board[row_num][col_num] = 1;  // set cell's value to alive
+			// 	}
+			// } else if (cell_value > 1 || state_one_cell_should_survive(row_num, col_num)) {
+			// 	++current_board[row_num][col_num];
+			// 	if (current_board[row_num][col_num] >= parameters.count_of_states) {
+			// 		current_board[row_num][col_num] = 0;
+			// 	}
+			// }
 			if (cell_is_dead(cell_value)) {
 				if (dead_cell_should_be_born(row_num, col_num)) {
 					current_board[row_num][col_num] = 1;  // set cell's value to alive
 				}
-			} else if (cell_value > 1 || state_one_cell_should_survive(row_num, col_num)) {
-				++current_board[row_num][col_num];
-				if (current_board[row_num][col_num] >= parameters.count_of_states) {
-					current_board[row_num][col_num] = 0;
-				}
+			} else if (cell_is_alive(cell_value) && cell_should_be_incremented(row_num, col_num)) {
+				if (!(cell_value + 1 > parameters.count_of_states - 1))
+					++current_board[row_num][col_num];	// increment cell
+			} else if (cell_is_alive(cell_value) && !cell_should_be_incremented(row_num, col_num)) {
+				if (!(cell_value - 1 < 0))
+					--current_board[row_num][col_num];	// decrement cell
 			}
 		}
+	}
+}
+
+bool BoardEngine::cell_should_be_incremented(int row_num, int col_num) const {
+	CellValue cell_value = previous_board[row_num][col_num];
+	int count_of_neighbours = count_neighbours(row_num, col_num, parameters.alive_max);
+	if (count_of_neighbours >= parameters.alive_min && count_of_neighbours <= parameters.alive_max) {
+		return true;
+	} else {
+		return false;
 	}
 }
 
@@ -204,18 +229,21 @@ int BoardEngine::count_neighbours(int row_num, int col_num, int max_num_of_neigh
 
 	for (int current_row = first_row_num; current_row <= last_row_num; ++current_row) {
 		for (int current_col = first_col_num; current_col <= last_col_num; ++current_col) {
-			if (cell_in_neighbourhood(current_row, current_col, row_num, col_num) && cell_is_alive(previous_board[current_row][current_col])) {
+			if (cell_in_neighbourhood(current_row, current_col, row_num, col_num) && previous_board[current_row][current_col] == 1) {
 				++count;
+				if (current_row == row_num && current_col == col_num && !parameters.count_middle) {
+					--count;
+				}
 			}
 			if (count > max_num_of_neighbours) {
 				return max_num_of_neighbours + 1;
 			}
 		}
 	}
-	if (!parameters.count_middle && cell_is_alive(previous_board[row_num][col_num])) {
-		--count;
-	}
-	std::cout << "count of neighbours for " << row_num << ", " << col_num << " equals: " << count << ". neighb =  " << parameters.neighb << "\n";
+	// if (!parameters.count_middle && previous_board[row_num][col_num] == 1) {
+	// 	--count;
+	// }
+	// std::cout << "count of neighbours for " << row_num << ", " << col_num << " equals: " << count << ". neighb =  " << parameters.neighb << "\n";
 	assert(count >= 0);
 	return count;
 }
@@ -259,14 +287,14 @@ PYBIND11_MODULE(generatedBoardEngineModuleName, handle) {
 		.def("get_board", &BoardEngine::get_board)
 		.def("get_height", &BoardEngine::get_height)
 		.def("get_width", &BoardEngine::get_width)
-		.def("get_range", &BoardEngine::get_range)	// TODO: maybe remove these params getters
-		.def("get_count_of_states", &BoardEngine::get_count_of_states)
-		.def("get_count_middle", &BoardEngine::get_count_middle)
-		.def("get_alive_min", &BoardEngine::get_alive_min)
-		.def("get_alive_max", &BoardEngine::get_alive_max)
-		.def("get_be_born_min", &BoardEngine::get_be_born_min)
-		.def("get_be_born_max", &BoardEngine::get_be_born_max)
-		.def("get_neighb", &BoardEngine::get_neighb)
+		// .def("get_range", &BoardEngine::get_range)	// TODO: maybe remove these params getters
+		// .def("get_count_of_states", &BoardEngine::get_count_of_states)
+		// .def("get_count_middle", &BoardEngine::get_count_middle)
+		// .def("get_alive_min", &BoardEngine::get_alive_min)
+		// .def("get_alive_max", &BoardEngine::get_alive_max)
+		// .def("get_be_born_min", &BoardEngine::get_be_born_min)
+		// .def("get_be_born_max", &BoardEngine::get_be_born_max)
+		// .def("get_neighb", &BoardEngine::get_neighb)
 		.def("randomize_board", &BoardEngine::randomize_board)
 		.def("calculate_next_state", &BoardEngine::calculate_next_state);
 }

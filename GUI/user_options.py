@@ -20,8 +20,8 @@ except ModuleNotFoundError or ImportError:  # pylint: disable=binary-op-exceptio
 
 WIDTH = 100
 HEIGHT = 100
-BOARD_SIZE = 4  # TODO: get this from cpp or the other way
-RANGE = 2
+BOARD_SIZE = 50  # TODO: get this from cpp or the other way
+RANGE = 2  # TODO: get this from cpp or the other way
 SLEEP = 0.5
 
 
@@ -262,12 +262,19 @@ class UserOptions:         # pylint: disable=too-many-instance-attributes,attrib
             max(utils.OPTIONS.b_range),
             utils.OPTIONS.neighb
         )
+
+        # set cells for testing
+        game_engine.set_cell(1, 2, 1)
+        game_engine.set_cell(2, 1, 1)
+        game_engine.set_cell(2, 2, 1)
+        game_engine.set_cell(3, 3, 1)
+
         while True:
-            new_version = calculate_next_state(game_engine)
-            self.board.update(new_version)
+            self.board.update(game_engine.get_board())
             pygame.display.flip()
             self.root.update()
             sleep(utils.OPTIONS.sleep_time)
+            calculate_next_state(game_engine)
 
     def stop(self) -> None:
         """
