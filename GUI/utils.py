@@ -65,4 +65,5 @@ def load_params(path: str) -> Params:
         Params.neighb = data["neighbourhood"]
     return params
 
+
 OPTIONS = Params()

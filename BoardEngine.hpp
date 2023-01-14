@@ -2,19 +2,20 @@
 #define BoardEngine_H
 #include <array>
 #include <iostream>
+#include <string>
 
 const int NUM_OF_ROWS = 4;
 const int NUM_OF_COLS = NUM_OF_ROWS;
 
 struct GameParameters {
-	int range = 1;							 // range of neighborhood
-	int count_of_states = 2;				 // number of possible states (starts from 0)
-	bool count_middle = false;				 // defines whether to count middle cell when counting cells in neighborhood
-	int alive_min = 2;						 // Smin
-	int alive_max = 3;						 // Smax
-	int be_born_min = 3;					 // Bmin
-	int be_born_max = 3;					 // Bmax
-	bool neighborhood_type_is_moore = true;	 // defines whether neighborhood type is NM or NN
+	int range = 1;				// range of neighborhood
+	int count_of_states = 2;	// number of possible states (starts from 0)
+	bool count_middle = false;	// defines whether to count middle cell when counting cells in neighborhood
+	int alive_min = 2;			// Smin
+	int alive_max = 3;			// Smax
+	int be_born_min = 3;		// Bmin
+	int be_born_max = 3;		// Bmax
+	std::string neighb = "NM";	// defines whether neighborhood type is NM or NN
 };
 
 typedef int CellValue;
@@ -29,10 +30,10 @@ class BoardEngine {
    public:
 	BoardEngine();
 	BoardEngine(const Board &starting_board);
-	BoardEngine(const GameParameters &user_parameters);																						// TODO: remove this?
-	BoardEngine(const GameParameters &user_parameters, const Board &starting_board);														// TODO: remove this?
-	BoardEngine(const int Rr, const int Cc, const bool Mm, const int Smin, const int Smax, const int Bmin, const int Bmax, const bool Nn);	// TODO: remove this?
-	void set_parameters(const int Rr, const int Cc, const bool Mm, const int Smin, const int Smax, const int Bmin, const int Bmax, const bool Nn);
+	BoardEngine(const GameParameters &user_parameters);																							   // TODO: remove this?
+	BoardEngine(const GameParameters &user_parameters, const Board &starting_board);															   // TODO: remove this?
+	BoardEngine(const int Rr, const int Cc, const bool Mm, const int Smin, const int Smax, const int Bmin, const int Bmax, const std::string Nn);  // TODO: remove this?
+	void set_parameters(const int Rr, const int Cc, const bool Mm, const int Smin, const int Smax, const int Bmin, const int Bmax, const std::string Nn);
 	void set_cell(int row_num, int col_num, int new_value);
 	void print_current_board() const;
 	Board get_board() const;
@@ -45,7 +46,7 @@ class BoardEngine {
 	int get_alive_max() const;
 	int get_be_born_min() const;
 	int get_be_born_max() const;
-	bool get_neighbourhood_type_is_moore() const;
+	std::string get_neighb() const;
 	void change_random_cell();
 	void randomize_board(int num_of_random_cells);
 	void calculate_next_state();

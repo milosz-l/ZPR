@@ -20,7 +20,7 @@ except ModuleNotFoundError or ImportError:  # pylint: disable=binary-op-exceptio
 
 WIDTH = 100
 HEIGHT = 100
-BOARD_SIZE = 50
+BOARD_SIZE = 4  # TODO: get this from cpp or the other way
 RANGE = 2
 SLEEP = 0.5
 
@@ -244,13 +244,24 @@ class UserOptions:         # pylint: disable=too-many-instance-attributes,attrib
             BOARD_SIZE, BOARD_SIZE, utils.OPTIONS.states
         )
         self.root.update()
-        self.run(utils.OPTIONS.states, BOARD_SIZE, BOARD_SIZE)
+        # self.run(utils.OPTIONS.states, BOARD_SIZE, BOARD_SIZE)
+        self.run()
 
-    def run(self, states, height, width):
+    def run(self):
         """
         Runs the game. Updates window with game display each time new board becomes available.
         """
         game_engine = generatedBoardEngineModuleName.PySomeClass()
+        game_engine.set_parameters(
+            utils.OPTIONS.range,
+            utils.OPTIONS.states,
+            utils.OPTIONS.mid,
+            min(utils.OPTIONS.s_range),
+            max(utils.OPTIONS.s_range),
+            min(utils.OPTIONS.b_range),
+            max(utils.OPTIONS.b_range),
+            utils.OPTIONS.neighb
+        )
         while True:
             new_version = calculate_next_state(game_engine)
             self.board.update(new_version)

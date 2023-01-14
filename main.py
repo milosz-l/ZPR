@@ -1,5 +1,5 @@
-# from GUI.user_options import main
-from GUI.board_display import main
+from GUI.user_options import main
+# from GUI.board_display import main
 
 
 def print_board(board):

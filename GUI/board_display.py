@@ -49,8 +49,6 @@ class BoardWindow:
                     self.cell_size,
                     self.cell_size,
                 )
-                print(x_val, y_val)
-                print("new rect = ", new_rect)
                 pygame.draw.rect(self.window, self.colors[new_board[y_val][x_val]], new_rect)
 
     def save_as_img(self, name: str) -> None:
@@ -117,6 +115,7 @@ def define_colors(states: int) -> List[tuple]:
 
 
 def main():
+    # main for testing board_display.py file
     pygame.init()   # pylint: disable=no-member
     states = 5  # TODO: get these values from engine
     game_engine = generatedBoardEngineModuleName.PySomeClass()
@@ -138,9 +137,7 @@ def main():
                 return
         # new_version = randomize_board(game_engine, num_of_random_cells=width*2)
         new_version = calculate_next_state(game_engine)
-        print("before error in python")
         board.update(new_version)
-        # game_engine.print_current_board()
         sleep(1)
         pygame.display.flip()
 

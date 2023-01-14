@@ -32,7 +32,7 @@ BoardEngine::BoardEngine(const GameParameters &user_parameters, const Board &sta
 	this->current_board = starting_board;
 }
 
-BoardEngine::BoardEngine(const int Rr, const int Cc, const bool Mm, const int Smin, const int Smax, const int Bmin, const int Bmax, const bool Nn) {
+BoardEngine::BoardEngine(const int Rr, const int Cc, const bool Mm, const int Smin, const int Smax, const int Bmin, const int Bmax, const std::string Nn) {
 	parameters.range = Rr;
 	parameters.count_of_states = Cc;
 	parameters.count_middle = Mm;
@@ -40,10 +40,10 @@ BoardEngine::BoardEngine(const int Rr, const int Cc, const bool Mm, const int Sm
 	parameters.alive_max = Smax;
 	parameters.be_born_min = Bmin;
 	parameters.be_born_max = Bmax;
-	parameters.neighborhood_type_is_moore = Nn;
+	parameters.neighb = Nn;
 }
 
-void BoardEngine::set_parameters(const int Rr, const int Cc, const bool Mm, const int Smin, const int Smax, const int Bmin, const int Bmax, const bool Nn) {
+void BoardEngine::set_parameters(const int Rr, const int Cc, const bool Mm, const int Smin, const int Smax, const int Bmin, const int Bmax, const std::string Nn) {
 	parameters.range = Rr;
 	parameters.count_of_states = Cc;
 	parameters.count_middle = Mm;
@@ -51,7 +51,7 @@ void BoardEngine::set_parameters(const int Rr, const int Cc, const bool Mm, cons
 	parameters.alive_max = Smax;
 	parameters.be_born_min = Bmin;
 	parameters.be_born_max = Bmax;
-	parameters.neighborhood_type_is_moore = Nn;
+	parameters.neighb = Nn;
 }
 
 void BoardEngine::set_cell(int row_num, int col_num, int new_value) {
@@ -110,8 +110,8 @@ int BoardEngine::get_be_born_max() const {
 	return parameters.be_born_max;
 }
 
-bool BoardEngine::get_neighbourhood_type_is_moore() const {
-	return parameters.neighborhood_type_is_moore;
+std::string BoardEngine::get_neighb() const {
+	return parameters.neighb;
 }
 
 void BoardEngine::change_random_cell() {
@@ -135,24 +135,18 @@ void BoardEngine::calculate_next_state() {
 	for (int row_num = 0; row_num < NUM_OF_ROWS; ++row_num) {
 		for (int col_num = 0; col_num < NUM_OF_COLS; ++col_num) {
 			CellValue cell_value = current_board[row_num][col_num];
-			std::cout << "row_num: " << row_num << ", col_num " << col_num << "\n";
 			if (cell_is_dead(cell_value)) {
-				// std::cout << "below is an error\n";
 				if (dead_cell_should_be_born(row_num, col_num)) {
 					current_board[row_num][col_num] = 1;  // set cell's value to alive
-					std::cout << "tihskcuf inside if\n";
 				}
-				std::cout << "tihskcuf\n";
 			} else if (cell_value > 1 || state_one_cell_should_survive(row_num, col_num)) {
 				++current_board[row_num][col_num];
-				std::cout << "++current_board[][]\n";
 				if (current_board[row_num][col_num] >= parameters.count_of_states) {
 					current_board[row_num][col_num] = 0;
 				}
 			}
 		}
 	}
-	std::cout << "before error\n";
 }
 
 bool BoardEngine::cell_is_dead(CellValue cell_value) const {
@@ -186,7 +180,7 @@ int BoardEngine::add_bias_to_coordinate(int bias, int coordinate, int max_coordi
 bool BoardEngine::cell_in_neighbourhood(int current_row, int current_col, int center_row, int center_col) const {
 	// return whether a (current_row, current_col) cell should be counted as a neighbor of (center_row, center_col) cell
 	// type of neighborhood is defined in GameParameters
-	if (parameters.neighborhood_type_is_moore) {
+	if (parameters.neighb == "NM") {
 		return true;
 	} else {
 		int vertical_distance = abs(current_row - center_row);
@@ -221,13 +215,12 @@ int BoardEngine::count_neighbours(int row_num, int col_num, int max_num_of_neigh
 	if (!parameters.count_middle && cell_is_alive(previous_board[row_num][col_num])) {
 		--count;
 	}
-	std::cout << "count of neighbours for" << row_num << ", " << col_num << " equals: " << count << "\n";
+	std::cout << "count of neighbours for " << row_num << ", " << col_num << " equals: " << count << ". neighb =  " << parameters.neighb << "\n";
 	assert(count >= 0);
 	return count;
 }
 
 bool BoardEngine::dead_cell_should_be_born(int row_num, int col_num) const {
-	std::cout << "running dead_cell_should_be_born for " << row_num << " " << col_num << "\n";
 	CellValue cell_value = previous_board[row_num][col_num];
 	assert(cell_is_dead(cell_value));
 
@@ -235,14 +228,12 @@ bool BoardEngine::dead_cell_should_be_born(int row_num, int col_num) const {
 	if (count_of_neighbours >= parameters.be_born_min && count_of_neighbours <= parameters.be_born_max) {
 		return true;
 	} else {
-		std::cout << "below is an error for " << row_num << " " << col_num << "\n";
 		return false;
 	}
 }
 
 bool BoardEngine::state_one_cell_should_survive(int row_num, int col_num) const {
 	// returns whether a cell with state equal to one should survive according to  alive_min and alive_max
-	std::cout << "running state_one_cell_should_survive\n";
 	CellValue cell_value = previous_board[row_num][col_num];
 	assert(cell_value == 1);
 	int count_of_neighbours = count_neighbours(row_num, col_num, parameters.alive_max);
@@ -275,7 +266,7 @@ PYBIND11_MODULE(generatedBoardEngineModuleName, handle) {
 		.def("get_alive_max", &BoardEngine::get_alive_max)
 		.def("get_be_born_min", &BoardEngine::get_be_born_min)
 		.def("get_be_born_max", &BoardEngine::get_be_born_max)
-		.def("get_neighbourhood_type_is_moore", &BoardEngine::get_neighbourhood_type_is_moore)
+		.def("get_neighb", &BoardEngine::get_neighb)
 		.def("randomize_board", &BoardEngine::randomize_board)
 		.def("calculate_next_state", &BoardEngine::calculate_next_state);
 }
