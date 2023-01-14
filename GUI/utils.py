@@ -5,7 +5,7 @@
 import json
 
 
-class Params:           # pylint: disable=too-few-public-methods
+class Params:  # pylint: disable=too-few-public-methods
     """
     Class representing parameters required to the game
     """
@@ -64,5 +64,6 @@ def load_params(path: str) -> Params:
         Params.b_range = [data["b_min"], data["b_max"]]
         Params.neighb = data["neighbourhood"]
     return params
+
 
 OPTIONS = Params()

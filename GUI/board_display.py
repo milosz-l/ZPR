@@ -6,7 +6,7 @@ import pygame
 
 try:
     from build.Debug import generatedBoardEngineModuleName
-except ModuleNotFoundError or ImportError: # pylint: disable=binary-op-exception
+except ModuleNotFoundError or ImportError:  # pylint: disable=binary-op-exception
     from build import generatedBoardEngineModuleName
 
 CELL_SIZE = 15
@@ -49,7 +49,9 @@ class BoardWindow:
                     self.cell_size,
                     self.cell_size,
                 )
-                pygame.draw.rect(self.window, self.colors[new_board[y_val][x_val]], new_rect)
+                pygame.draw.rect(
+                    self.window, self.colors[new_board[y_val][x_val]], new_rect
+                )
 
     def save_as_img(self, name: str) -> None:
         """
@@ -99,7 +101,7 @@ def define_colors(states: int) -> List[tuple]:
 
 
 def main():
-    pygame.init()   # pylint: disable=no-member
+    pygame.init()  # pylint: disable=no-member
     states = 2  # TODO: get these values from engine
     height = 30
     width = 30
@@ -107,8 +109,8 @@ def main():
     game_engine = generatedBoardEngineModuleName.PySomeClass()
     while True:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:   # pylint: disable=no-member
-                pygame.quit()               # pylint: disable=no-member
+            if event.type == pygame.QUIT:  # pylint: disable=no-member
+                pygame.quit()  # pylint: disable=no-member
                 return
         new_version = new_board(states, height, width, game_engine)
         board.update(new_version)
