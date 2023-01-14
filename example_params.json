@@ -2,9 +2,9 @@
 	"range": "4",
 	"states": "2",
 	"middle": "False",
-	"Smin": "1",
-	"Smax": "4",
-	"Bmin": "1",
-	"Bmax": "3",
+	"s_min": "1",
+	"s_max": "4",
+	"b_min": "1",
+	"b_max": "3",
 	"neighbourhood": "NN"
 }
