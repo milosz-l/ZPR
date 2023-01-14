@@ -20,6 +20,7 @@ except ModuleNotFoundError or ImportError: # pylint: disable=binary-op-exception
 
 WIDTH = 100
 HEIGHT = 100
+BOARD_SIZE = 50
 RANGE = 2
 SLEEP = 0.5
 
@@ -28,7 +29,7 @@ class UserOptions:         # pylint: disable=too-many-instance-attributes,attrib
     Class representing main window that enables user to choose and specify options for the game.
     """
 
-    def __init__(self, width: int = 100, height: int = 100):
+    def __init__(self, width: int = WIDTH, height: int = HEIGHT):
         """
         Creates a window for choosing a way to specify game parameters or an option
         to run with default parameters.
@@ -242,14 +243,13 @@ class UserOptions:         # pylint: disable=too-many-instance-attributes,attrib
             utils.OPTIONS.range, utils.OPTIONS.range, utils.OPTIONS.states
         )
         self.root.update()
-        self.run(utils.OPTIONS.states, utils.OPTIONS.range, utils.OPTIONS.range)
+        self.run(utils.OPTIONS.states, BOARD_SIZE, BOARD_SIZE)
 
     def run(self, states, height, width):
         """
         Runs the game. Updates window with game display each time new board becomes available.
         """
         game_engine = generatedBoardEngineModuleName.PySomeClass()
-        print(type(game_engine))
         while True:
             new_version = new_board(states, height, width, game_engine)
             self.board.update(new_version)
