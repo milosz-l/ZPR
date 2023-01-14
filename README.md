@@ -17,6 +17,7 @@ Larger than Life
     cmake ..
     make
     cd ..
+    touch build/__init__.py
     python main.py `or` python3 main.py `or` python3.9 main.py
 
 ## example using conda
@@ -53,6 +54,7 @@ Larger than Life
     cmake ..
     make
     cd ..
+    touch build/__init__.py
     pytest tests/
 
 # Generate documentation
