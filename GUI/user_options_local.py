@@ -1,35 +1,44 @@
-import pygame
+"""
+    Module responsible for the GUI:
+    - menu with game's options
+    - gathering custom game options
+    - running main pygame window with board
+"""
+
 import tkinter as tk
 from tkinter import messagebox
-import random
+from datetime import datetime
 from time import sleep
-from board_display import BoardWindow
-import utils as utils
-
+import pygame
+from GUI.board_display import BoardWindow
+from GUI import utils
+import random
 
 WIDTH = 100
 HEIGHT = 100
+BOARD_SIZE = 50
 RANGE = 2
+SLEEP = 0.5
 
-SLEEP=0.5
-
-
-class UserOptions:
+class UserOptions:         # pylint: disable=too-many-instance-attributes,attribute-defined-outside-init
     """
     Class representing main window that enables user to choose and specify options for the game.
     """
 
-    def __init__(self, game_engine, width: int = 100, height: int = 100):
+    def __init__(self, width: int = WIDTH, height: int = HEIGHT):
         """
         Creates a window for choosing a way to specify game parameters or an option
         to run with default parameters.
         Possible choices:
             Start:  Starts a game if parameters are not provided, game runs with random parameters.
-            Custom options: Redirects to a next window for typing custom parameters.
-            Custome file:   Redirects to a next window for specifying a path to json file with parameters.
+            Custom options: Redirects to a window for typing custom parameters.
+            Custome file:   Redirects to a window for specifying path to json file with parameters.
+            Save board:     Saves current board to a PNG file.
+            Sleep:          Slows down the game.
             Close:  Closes all windows.
         """
         self.root = tk.Tk()
+        self.root.title("Game LtL")
         self.start_frame = tk.Frame(self.root, width=width, height=height)
         self.start_frame.pack()
         start_btn = tk.Button(self.start_frame, text="Start", command=self.start)
@@ -42,19 +51,25 @@ class UserOptions:
             self.start_frame, text="Custom file", command=self.file_options
         )
         file_btn.pack()
+        img_btn = tk.Button(
+            self.start_frame, text="Save board", command=self.save_board
+        )
+        img_btn.pack()
         sleep_btn = tk.Button(self.start_frame, text="Sleep", command=self.sleep_option)
         sleep_btn.pack()
         resleep_btn = tk.Button(self.start_frame, text="Reset sleep", command=self.resleep)
         resleep_btn.pack()
         stop_btn = tk.Button(self.start_frame, text="Close", command=self.stop)
         stop_btn.pack()
-        self.game_engine = game_engine
         self.root.update()
 
     def options(self):
         """
         Window for manually specifying custom parameters.
-        Parameters to fill are: range, states, middle, neighbourhood type.
+        Parameters to fill are: range, states,
+        count limits for a state to survive,
+        count limits for a dead cell to become a birth,
+        middle, neighbourhood type.
         """
         self.start_frame.pack_forget()
         self.options_frame = tk.Frame(self.root, width=WIDTH, height=HEIGHT)
@@ -101,17 +116,17 @@ class UserOptions:
             self.options_frame, text="Neighbourhood type", font=("Courier 12")
         )
         label_neighb.pack()
-        choice_neighb_NM = tk.Radiobutton(
+        choice_neighb_nm = tk.Radiobutton(
             self.options_frame, text="Moore", variable=self.neighb_type, value="NM"
         )
-        choice_neighb_NM.pack()
-        choice_neighb_NN = tk.Radiobutton(
+        choice_neighb_nm.pack()
+        choice_neighb_nn = tk.Radiobutton(
             self.options_frame,
             text="von Neumann",
             variable=self.neighb_type,
             value="NN",
         )
-        choice_neighb_NN.pack()
+        choice_neighb_nn.pack()
         self.stop_btn = tk.Button(
             self.options_frame, text="Done", command=self.save_options
         )
@@ -124,7 +139,7 @@ class UserOptions:
         If user provides incorrect values, an error message will be displayed.
 
         Raises:
-            ValueError:     When one or more values is missing.
+            ValueError:     When one or more values are missing.
         """
         try:
             utils.OPTIONS.range = int(self.entry_range.get())
@@ -157,12 +172,16 @@ class UserOptions:
         filepath_entry.pack()
         self.entry_filepath = tk.Entry(self.file_frame, text="", bd=5)
         self.entry_filepath.pack()
-        self.path_btn = tk.Button(
-            self.file_frame, text="Done", command=self.save_file_options
-        )
-        self.path_btn.pack(side=tk.LEFT)
-        self.start_frame.pack_forget()
-        self.file_frame.pack()
+        try:
+            self.path_btn = tk.Button(
+                self.file_frame, text="Done", command=self.save_file_options
+            )
+            self.path_btn.pack(side=tk.LEFT)
+        except FileNotFoundError:
+            error_msg("File not found", "Please provide a valid path. Now redirecting to previous window.")
+        finally:
+            self.start_frame.pack_forget()
+            self.file_frame.pack()
 
     def save_file_options(self):
         """
@@ -170,8 +189,17 @@ class UserOptions:
         """
         path = self.entry_filepath.get()
         utils.OPTIONS = utils.load_params(path)
+        check_user_options()
         self.file_frame.pack_forget()
         self.start_frame.pack()
+
+    def save_board(self):
+        """
+        Saves currently displayed board as a PNG file.
+        Name of the file: board_{current_date_with_time}.
+        """
+        name = "board_" + datetime.now().strftime("%Y%m%d_%H%M")
+        self.board.save_as_img(name)
 
     def sleep_option(self):
         """
@@ -213,43 +241,49 @@ class UserOptions:
         Starts game with random parameters.
         """
         self.board = BoardWindow(
-            utils.OPTIONS.range, utils.OPTIONS.range, utils.OPTIONS.states
+            BOARD_SIZE, BOARD_SIZE, utils.OPTIONS.states
         )
         self.root.update()
-        #self.proc = Process(target=self.run, args=(utils.OPTIONS.states, utils.OPTIONS.range, utils.OPTIONS.range))
-        #self.proc.start()
-        self.run(utils.OPTIONS.states, utils.OPTIONS.range, utils.OPTIONS.range)
+        self.run(utils.OPTIONS.states, BOARD_SIZE, BOARD_SIZE)
 
     def run(self, states, height, width):
         """
         Runs the game. Updates window with game display each time new board becomes available.
         """
         while True:
-            new_version = new_board(
-                states, height, width
-            )  # TODO: pass as param - self.game_engine)
+            new_version = new_board(states, height, width)
             self.board.update(new_version)
             pygame.display.flip()
             self.root.update()
             sleep(utils.OPTIONS.sleep_time)
 
-    def stop(self):
+    def stop(self) -> None:
         """
         Stops the game and closes all windows.
         """
-        #self.proc.join()
-        pygame.quit()
+        pygame.quit() # pylint: disable=no-member
         self.root.quit()
 
 
-def error_msg(title, msg):
+def error_msg(title: str, msg: str) -> None:
+    """
+    Shows pop up window with error message.
+
+    Args:
+        title:  Title of the error message.
+        msg:    Main text of error message.
+    """
     messagebox.showerror(title, msg)
 
 
-def check_user_options():
-    if not (1 <= utils.OPTIONS.range <= 10):
+def check_user_options() -> None:
+    """
+    Verifies values in options provided by the user.
+    In case of incorrect data, shows a pop up window with error.
+    """
+    if not 1 <= utils.OPTIONS.range <= 10:
         error_msg("Incorrect data", "Range must be in [1, 10]")
-    if not (1 <= utils.OPTIONS.states <= 25):
+    if not 1 <= utils.OPTIONS.states <= 25:
         error_msg("Incorrect data", "States must be in [1, 25]")
     if not (1 <= utils.OPTIONS.s_range[0] <= 25) or not (
         1 <= utils.OPTIONS.s_range[1] <= 25
@@ -259,8 +293,6 @@ def check_user_options():
         1 <= utils.OPTIONS.b_range[1] <= 25
     ):
         error_msg("Incorrect data", "Birth count must be in [1, 25]")
-
-
 def new_board(states, height, width):
     board = [[0 for _ in range(width)] for _ in range(height)]
     for y in range(height):
