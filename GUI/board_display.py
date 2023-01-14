@@ -49,7 +49,9 @@ class BoardWindow:
                     self.cell_size,
                     self.cell_size,
                 )
-                pygame.draw.rect(self.window, self.colors[new_board[y_val][x_val]], new_rect)
+                pygame.draw.rect(
+                    self.window, self.colors[new_board[y_val][x_val]], new_rect
+                )
 
     def save_as_img(self, name: str) -> None:
         """
@@ -132,8 +134,8 @@ def main():
 
     while True:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:   # pylint: disable=no-member
-                pygame.quit()               # pylint: disable=no-member
+            if event.type == pygame.QUIT:  # pylint: disable=no-member
+                pygame.quit()  # pylint: disable=no-member
                 return
         # new_version = randomize_board(game_engine, num_of_random_cells=width*2)
         new_version = calculate_next_state(game_engine)

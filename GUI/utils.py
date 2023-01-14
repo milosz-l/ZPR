@@ -5,7 +5,7 @@
 import json
 
 
-class Params:           # pylint: disable=too-few-public-methods
+class Params:  # pylint: disable=too-few-public-methods
     """
     Class representing parameters required to the game
     """

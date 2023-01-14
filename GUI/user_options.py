@@ -39,10 +39,11 @@ class UserOptions:         # pylint: disable=too-many-instance-attributes,attrib
             Custom options: Redirects to a window for typing custom parameters.
             Custome file:   Redirects to a window for specifying path to json file with parameters.
             Save board:     Saves current board to a PNG file.
-            Sleep:          TODO
+            Sleep:          Slows down the game.
             Close:  Closes all windows.
         """
         self.root = tk.Tk()
+        self.root.title("Game LtL")
         self.start_frame = tk.Frame(self.root, width=width, height=height)
         self.start_frame.pack()
         start_btn = tk.Button(self.start_frame, text="Start", command=self.start)
@@ -61,7 +62,9 @@ class UserOptions:         # pylint: disable=too-many-instance-attributes,attrib
         img_btn.pack()
         sleep_btn = tk.Button(self.start_frame, text="Sleep", command=self.sleep_option)
         sleep_btn.pack()
-        resleep_btn = tk.Button(self.start_frame, text="Reset sleep", command=self.resleep)
+        resleep_btn = tk.Button(
+            self.start_frame, text="Reset sleep", command=self.resleep
+        )
         resleep_btn.pack()
         stop_btn = tk.Button(self.start_frame, text="Close", command=self.stop)
         stop_btn.pack()
@@ -176,22 +179,36 @@ class UserOptions:         # pylint: disable=too-many-instance-attributes,attrib
         filepath_entry.pack()
         self.entry_filepath = tk.Entry(self.file_frame, text="", bd=5)
         self.entry_filepath.pack()
-        self.path_btn = tk.Button(
-            self.file_frame, text="Done", command=self.save_file_options
-        )
-        self.path_btn.pack(side=tk.LEFT)
-        self.start_frame.pack_forget()
-        self.file_frame.pack()
+        try:
+            self.path_btn = tk.Button(
+                self.file_frame, text="Done", command=self.save_file_options
+            )
+            self.path_btn.pack(side=tk.LEFT)
+        except FileNotFoundError:
+            error_msg(
+                "File not found",
+                "Please provide a valid path. Now redirecting to previous window.",
+            )
+        finally:
+            self.start_frame.pack_forget()
+            self.file_frame.pack()
 
     def save_file_options(self):
         """
         Saves file path provided by the user.
         """
         path = self.entry_filepath.get()
-        utils.OPTIONS = utils.load_params(path)
-        check_user_options()
-        self.file_frame.pack_forget()
-        self.start_frame.pack()
+        try:
+            utils.OPTIONS = utils.load_params(path)
+            check_user_options()
+        except FileNotFoundError:
+            error_msg(
+                "File not found",
+                "Please provide a valid path. Now redirecting to previous window.",
+            )
+        finally:
+            self.file_frame.pack_forget()
+            self.start_frame.pack()
 
     def save_board(self):
         """
@@ -226,9 +243,13 @@ class UserOptions:         # pylint: disable=too-many-instance-attributes,attrib
         """
         Saves custom options entered by the user.
         """
-        utils.OPTIONS.sleep_time = float(self.entry_sleep_time.get())
-        self.sleep_opt_frame.pack_forget()
-        self.start_frame.pack()
+        try:
+            utils.OPTIONS.sleep_time = float(self.entry_sleep_time.get())
+        except ValueError:
+            error_msg("Incorrect values", "Please provide valid float values")
+        finally:
+            self.sleep_opt_frame.pack_forget()
+            self.start_frame.pack()
 
     def resleep(self):
         """
@@ -240,9 +261,7 @@ class UserOptions:         # pylint: disable=too-many-instance-attributes,attrib
         """
         Starts game with random parameters.
         """
-        self.board = BoardWindow(
-            BOARD_SIZE, BOARD_SIZE, utils.OPTIONS.states
-        )
+        self.board = BoardWindow(BOARD_SIZE, BOARD_SIZE, utils.OPTIONS.states)
         self.root.update()
         # self.run(utils.OPTIONS.states, BOARD_SIZE, BOARD_SIZE)
         self.run()
