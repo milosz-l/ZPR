@@ -240,7 +240,7 @@ class UserOptions:         # pylint: disable=too-many-instance-attributes,attrib
         Starts game with random parameters.
         """
         self.board = BoardWindow(
-            utils.OPTIONS.range, utils.OPTIONS.range, utils.OPTIONS.states
+            BOARD_SIZE, BOARD_SIZE, utils.OPTIONS.states
         )
         self.root.update()
         self.run(utils.OPTIONS.states, BOARD_SIZE, BOARD_SIZE)
