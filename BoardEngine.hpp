@@ -3,7 +3,7 @@
 #include <array>
 #include <iostream>
 
-const int NUM_OF_ROWS = 30;
+const int NUM_OF_ROWS = 4;
 const int NUM_OF_COLS = NUM_OF_ROWS;
 
 struct GameParameters {
@@ -22,19 +22,32 @@ typedef std::array<CellValue, NUM_OF_COLS> Row;
 typedef std::array<Row, NUM_OF_ROWS> Board;
 
 class BoardEngine {
-	const GameParameters parameters;
+	GameParameters parameters;
 	Board current_board;
 	Board previous_board;
 
    public:
 	BoardEngine();
 	BoardEngine(const Board &starting_board);
+	BoardEngine(const GameParameters &user_parameters);																						// TODO: remove this?
+	BoardEngine(const GameParameters &user_parameters, const Board &starting_board);														// TODO: remove this?
+	BoardEngine(const int Rr, const int Cc, const bool Mm, const int Smin, const int Smax, const int Bmin, const int Bmax, const bool Nn);	// TODO: remove this?
+	void set_parameters(const int Rr, const int Cc, const bool Mm, const int Smin, const int Smax, const int Bmin, const int Bmax, const bool Nn);
 	void set_cell(int row_num, int col_num, int new_value);
 	void print_current_board() const;
 	Board get_board() const;
+	void change_random_cell();
+	void randomize_board(int num_of_random_cells);
 	void calculate_next_state();
 
    private:
+	bool cell_is_dead(CellValue) const;
+	bool cell_is_alive(CellValue) const;
+	int add_bias_to_coordinate(int bias, int coordinate, int max_coordinate_value) const;
+	bool BoardEngine::cell_in_neighbourhood(int current_row, int current_col, int center_row, int center_col) const;
+	int count_neighbours(int row_num, int col_num, int max_num_of_neighbours) const;
+	bool dead_cell_should_be_born(int row_num, int col_num) const;
+	bool state_one_cell_should_survive(int row_num, int col_num) const;
 	int get_random_number_from_range(int min, int max) const;
 };
 

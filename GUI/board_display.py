@@ -6,7 +6,7 @@ import pygame
 
 try:
     from build.Debug import generatedBoardEngineModuleName
-except ModuleNotFoundError or ImportError: # pylint: disable=binary-op-exception
+except ModuleNotFoundError or ImportError:  # pylint: disable=binary-op-exception
     from build import generatedBoardEngineModuleName
 
 CELL_SIZE = 15
@@ -49,6 +49,8 @@ class BoardWindow:
                     self.cell_size,
                     self.cell_size,
                 )
+                print(x_val, y_val)
+                print("new rect = ", new_rect)
                 pygame.draw.rect(self.window, self.colors[new_board[y_val][x_val]], new_rect)
 
     def save_as_img(self, name: str) -> None:
@@ -61,21 +63,37 @@ class BoardWindow:
         pygame.image.save(self.window, f"{name}.png")
 
 
-def new_board(
-    states: int, height: int, width: int, engine: generatedBoardEngineModuleName
+def randomize_board(
+    engine: generatedBoardEngineModuleName, num_of_random_cells: int
 ) -> List[List[int]]:
     """
-    Generates new board with random cell states.
+    Returns board with given number of randomized cells
 
     Args:
-        states:     Number of cells' states.
-        height:     Height of the board.
-        width:      Width of the board.
+        engine:     Game engine written in C++
+        num_of_random_cells:    How many cells to randomize
+
+    Returns:
+        A matrix with elements equivalent to given cell's state.
+    """
+    engine.randomize_board(num_of_random_cells)
+    return engine.get_board()
+
+
+def calculate_next_state(
+    engine: generatedBoardEngineModuleName
+) -> List[List[int]]:
+    """
+    Returns next state of the board.
+
+    Args:
         engine:     Game engine written in C++
 
     Returns:
         A matrix with elements equivalent to given cell's state.
     """
+    print('before calculating next state:')
+    engine.print_current_board()
     engine.calculate_next_state()
     return engine.get_board()
 
@@ -100,19 +118,30 @@ def define_colors(states: int) -> List[tuple]:
 
 def main():
     pygame.init()   # pylint: disable=no-member
-    states = 2  # TODO: get these values from engine
-    height = 30
-    width = 30
+    states = 5  # TODO: get these values from engine
+    height = 4
+    width = height
     board = BoardWindow(height, width, states)
     game_engine = generatedBoardEngineModuleName.PySomeClass()
+    game_engine.set_parameters(1, states, False, 2, 3, 3, 3, True)
+
+    # set cells for testing
+    game_engine.set_cell(1, 2, 1)
+    game_engine.set_cell(2, 1, 1)
+    game_engine.set_cell(2, 2, 1)
+    # game_engine.set_cell(3, 3, 1)
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:   # pylint: disable=no-member
                 pygame.quit()               # pylint: disable=no-member
                 return
-        new_version = new_board(states, height, width, game_engine)
+        # new_version = randomize_board(game_engine, num_of_random_cells=width*2)
+        new_version = calculate_next_state(game_engine)
+        print("before error in python")
         board.update(new_version)
-        sleep(0.5)
+        # game_engine.print_current_board()
+        sleep(1)
         pygame.display.flip()
 
 

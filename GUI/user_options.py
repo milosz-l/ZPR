@@ -10,12 +10,12 @@ from tkinter import messagebox
 from datetime import datetime
 from time import sleep
 import pygame
-from GUI.board_display import BoardWindow, new_board
+from GUI.board_display import BoardWindow, calculate_next_state
 from GUI import utils
 
 try:
     from build.Debug import generatedBoardEngineModuleName
-except ModuleNotFoundError or ImportError: # pylint: disable=binary-op-exception
+except ModuleNotFoundError or ImportError:  # pylint: disable=binary-op-exception
     from build import generatedBoardEngineModuleName
 
 WIDTH = 100
@@ -23,6 +23,7 @@ HEIGHT = 100
 BOARD_SIZE = 50
 RANGE = 2
 SLEEP = 0.5
+
 
 class UserOptions:         # pylint: disable=too-many-instance-attributes,attribute-defined-outside-init
     """
@@ -251,7 +252,7 @@ class UserOptions:         # pylint: disable=too-many-instance-attributes,attrib
         """
         game_engine = generatedBoardEngineModuleName.PySomeClass()
         while True:
-            new_version = new_board(states, height, width, game_engine)
+            new_version = calculate_next_state(game_engine)
             self.board.update(new_version)
             pygame.display.flip()
             self.root.update()
@@ -261,7 +262,7 @@ class UserOptions:         # pylint: disable=too-many-instance-attributes,attrib
         """
         Stops the game and closes all windows.
         """
-        pygame.quit() # pylint: disable=no-member
+        pygame.quit()  # pylint: disable=no-member
         self.root.quit()
 
 
