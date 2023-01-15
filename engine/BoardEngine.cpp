@@ -167,6 +167,9 @@ int BoardEngine::count_neighbours(int row_num, int col_num, int max_num_of_neigh
 	int last_row_num = add_bias_to_coordinate(parameters.range, row_num, NUM_OF_ROWS);
 	int first_col_num = add_bias_to_coordinate(-parameters.range, col_num, NUM_OF_COLS);
 	int last_col_num = add_bias_to_coordinate(parameters.range, col_num, NUM_OF_COLS);
+	// if (row_num <= 5 && col_num <= 5) {
+	// 	std::cout << first_row_num << ", " << last_row_num << "; " << first_col_num << ", " << last_col_num << std::endl;
+	// }
 
 	for (int current_row = first_row_num; current_row <= last_row_num; ++current_row) {
 		for (int current_col = first_col_num; current_col <= last_col_num; ++current_col) {
@@ -177,21 +180,21 @@ int BoardEngine::count_neighbours(int row_num, int col_num, int max_num_of_neigh
 				}
 			}
 			if (count > max_num_of_neighbours) {
+				// std::cout << "count_neighbours out of max, returned " << count << " for " << row_num << ", " << col_num << std::endl;
 				return max_num_of_neighbours + 1;
 			}
 		}
 	}
-	// if (!parameters.count_middle && previous_board[row_num][col_num] == 1) {
-	// 	--count;
+	// if (row_num <= 5 && col_num <= 5) {
+	// 	std::cout << "count of neighbours for " << row_num << ", " << col_num << " equals: " << count << ". neighb =  " << parameters.neighb << "\n";
 	// }
-	std::cout << "count of neighbours for " << row_num << ", " << col_num << " equals: " << count << ". neighb =  " << parameters.neighb << "\n";
 	assert(count >= 0);
 	return count;
 }
 
 bool BoardEngine::dead_cell_should_be_born(int row_num, int col_num) const {
 	CellValue cell_value = previous_board[row_num][col_num];
-	std::cout << "assert2 - cell is dead" << std::endl;
+	// std::cout << "assert2 - cell is dead" << std::endl;
 	assert(cell_is_dead(cell_value));
 
 	int count_of_neighbours = count_neighbours(row_num, col_num, parameters.be_born_max);
@@ -205,7 +208,7 @@ bool BoardEngine::dead_cell_should_be_born(int row_num, int col_num) const {
 bool BoardEngine::state_one_cell_should_survive(int row_num, int col_num) const {
 	// returns whether a cell with state equal to one should survive according to  alive_min and alive_max
 	CellValue cell_value = previous_board[row_num][col_num];
-	std::cout << "assert3 - cell is 1" << std::endl;
+	// std::cout << "assert3 - cell is 1" << std::endl;
 	assert(cell_value == 1);
 	int count_of_neighbours = count_neighbours(row_num, col_num, parameters.alive_max);
 	if (count_of_neighbours >= parameters.alive_min && count_of_neighbours <= parameters.alive_max) {
@@ -231,5 +234,6 @@ PYBIND11_MODULE(BoardEngine, handle) {
 		.def("get_height", &BoardEngine::get_height)
 		.def("get_width", &BoardEngine::get_width)
 		.def("randomize_board", &BoardEngine::randomize_board)
+		// .def("count_neighbours", &BoardEngine::count_neighbours)
 		.def("calculate_next_state", &BoardEngine::calculate_next_state);
 }

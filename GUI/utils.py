@@ -13,7 +13,7 @@ class Params:  # pylint: disable=too-few-public-methods
     def __init__(
         self,
         range: int = 1,
-        states: int = 2,
+        states: int = 5,
         mid: bool = False,
         s_min: int = 2,
         s_max: int = 3,
