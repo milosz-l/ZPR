@@ -184,13 +184,14 @@ int BoardEngine::count_neighbours(int row_num, int col_num, int max_num_of_neigh
 	// if (!parameters.count_middle && previous_board[row_num][col_num] == 1) {
 	// 	--count;
 	// }
-	// std::cout << "count of neighbours for " << row_num << ", " << col_num << " equals: " << count << ". neighb =  " << parameters.neighb << "\n";
+	std::cout << "count of neighbours for " << row_num << ", " << col_num << " equals: " << count << ". neighb =  " << parameters.neighb << "\n";
 	assert(count >= 0);
 	return count;
 }
 
 bool BoardEngine::dead_cell_should_be_born(int row_num, int col_num) const {
 	CellValue cell_value = previous_board[row_num][col_num];
+	std::cout << "assert2 - cell is dead" << std::endl;
 	assert(cell_is_dead(cell_value));
 
 	int count_of_neighbours = count_neighbours(row_num, col_num, parameters.be_born_max);
@@ -204,6 +205,7 @@ bool BoardEngine::dead_cell_should_be_born(int row_num, int col_num) const {
 bool BoardEngine::state_one_cell_should_survive(int row_num, int col_num) const {
 	// returns whether a cell with state equal to one should survive according to  alive_min and alive_max
 	CellValue cell_value = previous_board[row_num][col_num];
+	std::cout << "assert3 - cell is 1" << std::endl;
 	assert(cell_value == 1);
 	int count_of_neighbours = count_neighbours(row_num, col_num, parameters.alive_max);
 	if (count_of_neighbours >= parameters.alive_min && count_of_neighbours <= parameters.alive_max) {

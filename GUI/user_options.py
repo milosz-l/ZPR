@@ -256,6 +256,17 @@ class UserOptions:         # pylint: disable=too-many-instance-attributes,attrib
         """
         utils.OPTIONS.sleep_time = SLEEP
 
+    def board_in_file_has_correct_size(self, board_from_file, game_engine):
+        """
+        returns whether board specified in given file has correct size
+        """
+        if len(board_from_file) != BOARD_SIZE:
+            return False
+        for line in board_from_file:
+            if len(line) != BOARD_SIZE:
+                return False
+        return True
+
     def set_starting_board_from_file(self, game_engine, file_name="starting_board.txt"):
         """
         Sets starting board from a txt file named "starting_board.txt".
@@ -264,18 +275,14 @@ class UserOptions:         # pylint: disable=too-many-instance-attributes,attrib
         with open(file_name) as f:
             board_from_file = [[int(n) for n in line.split()] for line in f]
 
-        if len(board_from_file) != BOARD_SIZE:
-            game_engine.randomize_board()
-            return
-        for line in board_from_file:
-            if len(line) != BOARD_SIZE:
-                game_engine.randomize_board()
-                return
+        if not self.board_in_file_has_correct_size(board_from_file, game_engine):
+            game_engine.randomize_board(BOARD_SIZE*BOARD_SIZE)
+            print("after randomizing board")
+            game_engine.print_current_board()
 
         for row_num, row in enumerate(board_from_file):
             for col_num, cell_value in enumerate(row):
                 game_engine.set_cell(row_num, col_num, cell_value)
-        return
 
     def start(self):
         """
