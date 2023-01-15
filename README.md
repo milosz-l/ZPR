@@ -69,9 +69,10 @@ If you want, you can give your own starting board as a txt file.
 # Generate documentation
     doxygen config_doxygen
 
-
+# Additional installs
 for Ubuntu runs, ```sudo apt-get install python3-tk``` is required
 
+# Format python code
 Python code formatter - Black:
 ```black .```
 
@@ -79,3 +80,7 @@ TODO: pylint command
 Python linter - Pylint:
 ```pylint ./GUI```
 ```pylint ```
+
+# Format C++ code
+    chmod +x engine/run_clang_format.sh
+    ./engine/run_clang_format.sh
