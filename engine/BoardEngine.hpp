@@ -9,7 +9,7 @@ const int NUM_OF_COLS = NUM_OF_ROWS;
 
 struct GameParameters {
 	int range = 1;				// range of neighborhood
-	int count_of_states = 2;	// number of possible states (starts from 0)
+	int count_of_states = 5;	// number of possible states (starts from 0)
 	bool count_middle = false;	// defines whether to count middle cell when counting cells in neighborhood
 	int alive_min = 2;			// Smin
 	int alive_max = 3;			// Smax

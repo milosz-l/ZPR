@@ -277,12 +277,12 @@ class UserOptions:         # pylint: disable=too-many-instance-attributes,attrib
 
         if not self.board_in_file_has_correct_size(board_from_file, game_engine):
             game_engine.randomize_board(BOARD_SIZE*BOARD_SIZE)
-            print("after randomizing board")
-            game_engine.print_current_board()
-
-        for row_num, row in enumerate(board_from_file):
-            for col_num, cell_value in enumerate(row):
-                game_engine.set_cell(row_num, col_num, cell_value)
+            # print("after randomizing board")
+            # game_engine.print_current_board()
+        else:
+            for row_num, row in enumerate(board_from_file):
+                for col_num, cell_value in enumerate(row):
+                    game_engine.set_cell(row_num, col_num, cell_value)
 
     def start(self):
         """

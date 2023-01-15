@@ -20,7 +20,7 @@ class Params:  # pylint: disable=too-few-public-methods
         b_min: int = 3,
         b_max: int = 3,
         neighb: str = "NM",
-        sleep_time: int = 1,
+        sleep_time: int = 0.5,
     ):  # pylint: disable=too-many-arguments,redefined-builtin
         """
         Args:
