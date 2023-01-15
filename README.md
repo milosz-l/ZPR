@@ -8,6 +8,7 @@ Larger than Life
 2. install requirements (`pip install -r requirements.txt`)
 3. configure and build cmake
 4. run main.py (`python main.py`)
+NOTE: In case there is a problem with import, try adding `__init__.py` file to build folder (`touch build/__init__.py`)
 
 ## example using pip (preferred)
     git clone https://github.com/pybind/pybind11.git
