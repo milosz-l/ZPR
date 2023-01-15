@@ -76,10 +76,9 @@ for Ubuntu runs, ```sudo apt-get install python3-tk``` is required
 Python code formatter - Black:
 ```black .```
 
-TODO: pylint command
 Python linter - Pylint:
 ```pylint ./GUI```
-```pylint ```
+```pylint main.py```
 
 # Format C++ code
     chmod +x engine/run_clang_format.sh
