@@ -302,7 +302,7 @@ class UserOptions:  # pylint: disable=too-many-instance-attributes,attribute-def
 
     def start(self):
         """
-        Starts game with random parameters.
+        Starts game.
         """
         self.board = BoardWindow(BOARD_SIZE, BOARD_SIZE, utils.OPTIONS.states)
         self.root.update()
@@ -327,12 +327,15 @@ class UserOptions:  # pylint: disable=too-many-instance-attributes,attribute-def
         self.set_starting_board_from_file(game_engine)
 
         while True:
-            pygame.event.get()
-            self.board.update(game_engine.get_board())
-            pygame.display.flip()
-            self.root.update()
-            sleep(utils.OPTIONS.sleep_time)
-            calculate_next_state(game_engine)
+            try:
+                pygame.event.get()
+                self.board.update(game_engine.get_board())
+                pygame.display.flip()
+                self.root.update()
+                sleep(utils.OPTIONS.sleep_time)
+                calculate_next_state(game_engine)
+            except Exception:
+                break
 
     def stop(self) -> None:
         """
