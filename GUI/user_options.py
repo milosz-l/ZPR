@@ -14,9 +14,9 @@ from GUI.board_display import BoardWindow, calculate_next_state
 from GUI import utils
 
 try:
-    from build.Debug import generatedBoardEngineModuleName
+    from build.Debug import BoardEngine
 except ModuleNotFoundError or ImportError:  # pylint: disable=binary-op-exception
-    from build import generatedBoardEngineModuleName
+    from build import BoardEngine
 
 WIDTH = 100
 HEIGHT = 100
@@ -270,7 +270,7 @@ class UserOptions:         # pylint: disable=too-many-instance-attributes,attrib
         """
         Runs the game. Updates window with game display each time new board becomes available.
         """
-        game_engine = generatedBoardEngineModuleName.PySomeClass()
+        game_engine = BoardEngine.BoardEngine()
         game_engine.set_parameters(
             utils.OPTIONS.range,
             utils.OPTIONS.states,

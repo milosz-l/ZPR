@@ -5,9 +5,9 @@ from typing import List
 import pygame
 
 try:
-    from build.Debug import generatedBoardEngineModuleName
+    from build.Debug import BoardEngine
 except ModuleNotFoundError or ImportError:  # pylint: disable=binary-op-exception
-    from build import generatedBoardEngineModuleName
+    from build import BoardEngine
 
 CELL_SIZE = 12
 
@@ -64,7 +64,7 @@ class BoardWindow:
 
 
 def randomize_board(
-    engine: generatedBoardEngineModuleName, num_of_random_cells: int
+    engine: BoardEngine, num_of_random_cells: int
 ) -> List[List[int]]:
     """
     Returns board with given number of randomized cells
@@ -81,7 +81,7 @@ def randomize_board(
 
 
 def calculate_next_state(
-    engine: generatedBoardEngineModuleName
+    engine: BoardEngine
 ) -> List[List[int]]:
     """
     Returns next state of the board.
@@ -120,7 +120,7 @@ def main():
     # main for testing board_display.py file
     pygame.init()   # pylint: disable=no-member
     states = 5  # TODO: get these values from engine
-    game_engine = generatedBoardEngineModuleName.PySomeClass()
+    game_engine = BoardEngine.BoardEngine()
     game_engine.set_parameters(1, states, False, 2, 3, 3, 3, True)
     height = game_engine.get_height()
     width = game_engine.get_width()

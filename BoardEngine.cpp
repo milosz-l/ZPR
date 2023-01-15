@@ -276,10 +276,10 @@ int BoardEngine::get_random_number_from_range(int min, int max) const {
 	return min + (rand() % static_cast<int>(max - min + 1));
 }
 
-PYBIND11_MODULE(generatedBoardEngineModuleName, handle) {
+PYBIND11_MODULE(BoardEngine, handle) {
 	handle.doc() = "this is a class generated from cpp";
 	py::class_<BoardEngine>(
-		handle, "PySomeClass")
+		handle, "BoardEngine")
 		.def(py::init<>())
 		.def("set_parameters", &BoardEngine::set_parameters)
 		.def("set_cell", &BoardEngine::set_cell)
