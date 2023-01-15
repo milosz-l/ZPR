@@ -1,6 +1,5 @@
 """Module responsible for board display management and the class BoardWindow."""
 
-from time import sleep
 from typing import List
 import pygame
 
@@ -63,9 +62,7 @@ class BoardWindow:
         pygame.image.save(self.window, f"{name}.png")
 
 
-def randomize_board(
-    engine: BoardEngine, num_of_random_cells: int
-) -> List[List[int]]:
+def randomize_board(engine: BoardEngine, num_of_random_cells: int) -> List[List[int]]:
     """
     Returns board with given number of randomized cells
 
@@ -80,9 +77,7 @@ def randomize_board(
     return engine.get_board()
 
 
-def calculate_next_state(
-    engine: BoardEngine
-) -> List[List[int]]:
+def calculate_next_state(engine: BoardEngine) -> List[List[int]]:
     """
     Returns next state of the board.
 
@@ -112,7 +107,3 @@ def define_colors(states: int) -> List[tuple]:
         colors[i] = (r_col, g_col, b_col)
         b_col += 255 // (states - 1)
     return colors
-
-
-if __name__ == "__main__":
-    main()

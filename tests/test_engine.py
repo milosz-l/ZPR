@@ -1,5 +1,4 @@
 import pytest
-from GUI.board_display import BoardWindow
 
 try:
     from build.Debug import BoardEngine
@@ -84,13 +83,13 @@ def test_right_upper_corner():
     """
     game_engine = BoardEngine.BoardEngine()
     game_engine.set_parameters(1, 5, False, 2, 9, 3, 9, "NM")
-    game_engine.set_cell(0, BOARD_SIZE-1, 1)
-    game_engine.set_cell(0, BOARD_SIZE-2, 1)
-    game_engine.set_cell(1, BOARD_SIZE-1, 1)
-    first_state = game_engine.get_board()[0][BOARD_SIZE-1]
+    game_engine.set_cell(0, BOARD_SIZE - 1, 1)
+    game_engine.set_cell(0, BOARD_SIZE - 2, 1)
+    game_engine.set_cell(1, BOARD_SIZE - 1, 1)
+    first_state = game_engine.get_board()[0][BOARD_SIZE - 1]
     assert first_state == 1
     game_engine.calculate_next_state()
-    second_state = game_engine.get_board()[0][BOARD_SIZE-1]
+    second_state = game_engine.get_board()[0][BOARD_SIZE - 1]
     assert second_state == 2
 
 
@@ -100,13 +99,13 @@ def test_left_lower_corner():
     """
     game_engine = BoardEngine.BoardEngine()
     game_engine.set_parameters(1, 5, False, 2, 9, 3, 9, "NM")
-    game_engine.set_cell(BOARD_SIZE-1, 0, 1)
-    game_engine.set_cell(BOARD_SIZE-1, 1, 1)
-    game_engine.set_cell(BOARD_SIZE-2, 0, 1)
-    first_state = game_engine.get_board()[BOARD_SIZE-1][0]
+    game_engine.set_cell(BOARD_SIZE - 1, 0, 1)
+    game_engine.set_cell(BOARD_SIZE - 1, 1, 1)
+    game_engine.set_cell(BOARD_SIZE - 2, 0, 1)
+    first_state = game_engine.get_board()[BOARD_SIZE - 1][0]
     assert first_state == 1
     game_engine.calculate_next_state()
-    second_state = game_engine.get_board()[BOARD_SIZE-1][0]
+    second_state = game_engine.get_board()[BOARD_SIZE - 1][0]
     assert second_state == 2
 
 
@@ -116,13 +115,13 @@ def test_right_lower_corner():
     """
     game_engine = BoardEngine.BoardEngine()
     game_engine.set_parameters(1, 5, False, 2, 9, 3, 9, "NM")
-    game_engine.set_cell(BOARD_SIZE-1, BOARD_SIZE-1, 1)
-    game_engine.set_cell(BOARD_SIZE-1, BOARD_SIZE-2, 1)
-    game_engine.set_cell(BOARD_SIZE-2, BOARD_SIZE-1, 1)
-    first_state = game_engine.get_board()[BOARD_SIZE-1][BOARD_SIZE-1]
+    game_engine.set_cell(BOARD_SIZE - 1, BOARD_SIZE - 1, 1)
+    game_engine.set_cell(BOARD_SIZE - 1, BOARD_SIZE - 2, 1)
+    game_engine.set_cell(BOARD_SIZE - 2, BOARD_SIZE - 1, 1)
+    first_state = game_engine.get_board()[BOARD_SIZE - 1][BOARD_SIZE - 1]
     assert first_state == 1
     game_engine.calculate_next_state()
-    second_state = game_engine.get_board()[BOARD_SIZE-1][BOARD_SIZE-1]
+    second_state = game_engine.get_board()[BOARD_SIZE - 1][BOARD_SIZE - 1]
     assert second_state == 2
 
 
