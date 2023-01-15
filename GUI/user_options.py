@@ -284,8 +284,11 @@ class UserOptions:         # pylint: disable=too-many-instance-attributes,attrib
         Sets starting board from a txt file named "starting_board.txt".
         If there is no such file or the file is invalid, sets the board to a random state.
         """
-        with open(file_name) as f:
-            board_from_file = [[int(n) for n in line.split()] for line in f]
+        try:
+            with open(file_name) as f:
+                board_from_file = [[int(n) for n in line.split()] for line in f]
+        except FileNotFoundError:
+            board_from_file = [[0]]
 
         if not self.board_in_file_has_correct_size(board_from_file) \
                 or not self.board_in_file_is_correct_for_parameters(board_from_file):
