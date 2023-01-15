@@ -92,8 +92,8 @@ def calculate_next_state(
     Returns:
         A matrix with elements equivalent to given cell's state.
     """
-    print('before calculating next state:')
-    engine.print_current_board()
+    # print('before calculating next state:')
+    # engine.print_current_board()
     engine.calculate_next_state()
     return engine.get_board()
 

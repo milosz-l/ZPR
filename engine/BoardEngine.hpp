@@ -29,7 +29,6 @@ class BoardEngine {
 
    public:
 	BoardEngine();
-	BoardEngine(const Board &starting_board);
 	void set_parameters(const int Rr, const int Cc, const bool Mm, const int Smin, const int Smax, const int Bmin, const int Bmax, const std::string Nn);
 	void set_cell(int row_num, int col_num, int new_value);
 	void print_current_board() const;

@@ -256,6 +256,27 @@ class UserOptions:         # pylint: disable=too-many-instance-attributes,attrib
         """
         utils.OPTIONS.sleep_time = SLEEP
 
+    def set_starting_board_from_file(self, game_engine, file_name="starting_board.txt"):
+        """
+        Sets starting board from a txt file named "starting_board.txt".
+        If there is no such file or the file is invalid, sets the board to a random state.
+        """
+        with open(file_name) as f:
+            board_from_file = [[int(n) for n in line.split()] for line in f]
+
+        if len(board_from_file) != BOARD_SIZE:
+            game_engine.randomize_board()
+            return
+        for line in board_from_file:
+            if len(line) != BOARD_SIZE:
+                game_engine.randomize_board()
+                return
+
+        for row_num, row in enumerate(board_from_file):
+            for col_num, cell_value in enumerate(row):
+                game_engine.set_cell(row_num, col_num, cell_value)
+        return
+
     def start(self):
         """
         Starts game with random parameters.
@@ -280,11 +301,7 @@ class UserOptions:         # pylint: disable=too-many-instance-attributes,attrib
             utils.OPTIONS.neighb
         )
 
-        # set cells for testing
-        game_engine.set_cell(1, 2, 1)
-        game_engine.set_cell(2, 1, 1)
-        game_engine.set_cell(2, 2, 1)
-        game_engine.set_cell(3, 3, 1)
+        self.set_starting_board_from_file(game_engine)
 
         while True:
             pygame.event.get()

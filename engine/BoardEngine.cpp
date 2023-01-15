@@ -16,11 +16,6 @@ BoardEngine::BoardEngine() {
 	}
 }
 
-BoardEngine::BoardEngine(const Board &starting_board) {
-	// set current board to a board given as an argument
-	this->current_board = starting_board;
-}
-
 void BoardEngine::set_parameters(const int Rr, const int Cc, const bool Mm, const int Smin, const int Smax, const int Bmin, const int Bmax, const std::string Nn) {
 	parameters.range = Rr;
 	if (Cc <= 2) {
