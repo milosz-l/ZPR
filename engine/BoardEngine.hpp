@@ -30,23 +30,12 @@ class BoardEngine {
    public:
 	BoardEngine();
 	BoardEngine(const Board &starting_board);
-	// BoardEngine(const GameParameters &user_parameters);																							   // TODO: remove this?
-	// BoardEngine(const GameParameters &user_parameters, const Board &starting_board);															   // TODO: remove this?
-	// BoardEngine(const int Rr, const int Cc, const bool Mm, const int Smin, const int Smax, const int Bmin, const int Bmax, const std::string Nn);  // TODO: remove this?
 	void set_parameters(const int Rr, const int Cc, const bool Mm, const int Smin, const int Smax, const int Bmin, const int Bmax, const std::string Nn);
 	void set_cell(int row_num, int col_num, int new_value);
 	void print_current_board() const;
 	Board get_board() const;
 	int get_height() const;
 	int get_width() const;
-	// int get_range() const;
-	// int get_count_of_states() const;
-	// bool get_count_middle() const;
-	// int get_alive_min() const;
-	// int get_alive_max() const;
-	// int get_be_born_min() const;
-	// int get_be_born_max() const;
-	// std::string get_neighb() const;
 	void change_random_cell();
 	void randomize_board(int num_of_random_cells);
 	void calculate_next_state();

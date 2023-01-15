@@ -18,10 +18,9 @@ try:
 except ModuleNotFoundError or ImportError:  # pylint: disable=binary-op-exception
     from build import BoardEngine
 
-WIDTH = 100
-HEIGHT = 100
+WIDTH = 100     # width of tkinter window
+HEIGHT = 100    # height of tkinter window
 BOARD_SIZE = 50  # TODO: get this from cpp or the other way
-# RANGE = 1  # TODO: get this from cpp or the other way
 SLEEP = 0.5
 
 
@@ -263,7 +262,6 @@ class UserOptions:         # pylint: disable=too-many-instance-attributes,attrib
         """
         self.board = BoardWindow(BOARD_SIZE, BOARD_SIZE, utils.OPTIONS.states)
         self.root.update()
-        # self.run(utils.OPTIONS.states, BOARD_SIZE, BOARD_SIZE)
         self.run()
 
     def run(self):
@@ -287,7 +285,6 @@ class UserOptions:         # pylint: disable=too-many-instance-attributes,attrib
         game_engine.set_cell(2, 1, 1)
         game_engine.set_cell(2, 2, 1)
         game_engine.set_cell(3, 3, 1)
-        # game_engine.set_cell(3, 2, 1)
 
         while True:
             pygame.event.get()

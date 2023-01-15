@@ -21,28 +21,6 @@ BoardEngine::BoardEngine(const Board &starting_board) {
 	this->current_board = starting_board;
 }
 
-// BoardEngine::BoardEngine(const GameParameters &user_parameters) {
-// 	// set parameters to parameters given as an argument
-// 	this->parameters = user_parameters;
-// }
-
-// BoardEngine::BoardEngine(const GameParameters &user_parameters, const Board &starting_board) {
-// 	// set parameters and board to those given as parameters
-// 	this->parameters = user_parameters;
-// 	this->current_board = starting_board;
-// }
-
-// BoardEngine::BoardEngine(const int Rr, const int Cc, const bool Mm, const int Smin, const int Smax, const int Bmin, const int Bmax, const std::string Nn) {
-// 	parameters.range = Rr;
-// 	parameters.count_of_states = Cc;
-// 	parameters.count_middle = Mm;
-// 	parameters.alive_min = Smin;
-// 	parameters.alive_max = Smax;
-// 	parameters.be_born_min = Bmin;
-// 	parameters.be_born_max = Bmax;
-// 	parameters.neighb = Nn;
-// }
-
 void BoardEngine::set_parameters(const int Rr, const int Cc, const bool Mm, const int Smin, const int Smax, const int Bmin, const int Bmax, const std::string Nn) {
 	parameters.range = Rr;
 	if (Cc <= 2) {
@@ -85,38 +63,6 @@ int BoardEngine::get_height() const {
 int BoardEngine::get_width() const {
 	return NUM_OF_COLS;
 }
-
-// int BoardEngine::get_range() const {
-// 	return parameters.range;
-// }
-
-// int BoardEngine::get_count_of_states() const {
-// 	return parameters.count_of_states;
-// }
-
-// bool BoardEngine::get_count_middle() const {
-// 	return parameters.count_middle;
-// }
-
-// int BoardEngine::get_alive_min() const {
-// 	return parameters.alive_min;
-// }
-
-// int BoardEngine::get_alive_max() const {
-// 	return parameters.alive_max;
-// }
-
-// int BoardEngine::get_be_born_min() const {
-// 	return parameters.be_born_min;
-// }
-
-// int BoardEngine::get_be_born_max() const {
-// 	return parameters.be_born_max;
-// }
-
-// std::string BoardEngine::get_neighb() const {
-// 	return parameters.neighb;
-// }
 
 void BoardEngine::change_random_cell() {
 	// set random cell to random state
@@ -287,14 +233,6 @@ PYBIND11_MODULE(BoardEngine, handle) {
 		.def("get_board", &BoardEngine::get_board)
 		.def("get_height", &BoardEngine::get_height)
 		.def("get_width", &BoardEngine::get_width)
-		// .def("get_range", &BoardEngine::get_range)	// TODO: maybe remove these params getters
-		// .def("get_count_of_states", &BoardEngine::get_count_of_states)
-		// .def("get_count_middle", &BoardEngine::get_count_middle)
-		// .def("get_alive_min", &BoardEngine::get_alive_min)
-		// .def("get_alive_max", &BoardEngine::get_alive_max)
-		// .def("get_be_born_min", &BoardEngine::get_be_born_min)
-		// .def("get_be_born_max", &BoardEngine::get_be_born_max)
-		// .def("get_neighb", &BoardEngine::get_neighb)
 		.def("randomize_board", &BoardEngine::randomize_board)
 		.def("calculate_next_state", &BoardEngine::calculate_next_state);
 }
