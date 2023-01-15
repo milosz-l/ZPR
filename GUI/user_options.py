@@ -277,8 +277,7 @@ class UserOptions:  # pylint: disable=too-many-instance-attributes,attribute-def
         max_cell_value = max(map(max, board_from_file))
         if min_cell_value >= 0 and max_cell_value <= count_of_states - 1:
             return True
-        else:
-            return False
+        return False
 
     def set_starting_board_from_file(self, game_engine, file_name="starting_board.txt"):
         """
@@ -286,8 +285,8 @@ class UserOptions:  # pylint: disable=too-many-instance-attributes,attribute-def
         If there is no such file or the file is invalid, sets the board to a random state.
         """
         try:
-            with open(file_name) as f:
-                board_from_file = [[int(n) for n in line.split()] for line in f]
+            with open(file_name) as file_p: # pylint: disable=unspecified-encoding
+                board_from_file = [[int(n) for n in line.split()] for line in file_p]
         except FileNotFoundError:
             board_from_file = [[0]]
 
@@ -334,7 +333,7 @@ class UserOptions:  # pylint: disable=too-many-instance-attributes,attribute-def
                 self.root.update()
                 sleep(utils.OPTIONS.sleep_time)
                 calculate_next_state(game_engine)
-            except Exception:
+            except Exception:   # pylint: disable=broad-except
                 break
 
     def stop(self) -> None:
