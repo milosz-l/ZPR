@@ -319,4 +319,3 @@ def main():
 
 
 main()
-# https://stackoverflow.com/questions/23319059/embedding-a-pygame-window-into-a-tkinter-or-wxpython-frame

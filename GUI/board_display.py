@@ -92,8 +92,6 @@ def calculate_next_state(
     Returns:
         A matrix with elements equivalent to given cell's state.
     """
-    # print('before calculating next state:')
-    # engine.print_current_board()
     engine.calculate_next_state()
     return engine.get_board()
 
@@ -114,34 +112,6 @@ def define_colors(states: int) -> List[tuple]:
         colors[i] = (r_col, g_col, b_col)
         b_col += 255 // (states - 1)
     return colors
-
-
-def main():
-    # main for testing board_display.py file
-    pygame.init()   # pylint: disable=no-member
-    states = 5  # TODO: get these values from engine
-    game_engine = BoardEngine.BoardEngine()
-    game_engine.set_parameters(1, states, False, 2, 3, 3, 3, True)
-    height = game_engine.get_height()
-    width = game_engine.get_width()
-    board = BoardWindow(height, width, states)
-
-    # set cells for testing
-    game_engine.set_cell(1, 2, 1)
-    game_engine.set_cell(2, 1, 1)
-    game_engine.set_cell(2, 2, 1)
-    # game_engine.set_cell(3, 3, 1)
-
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:  # pylint: disable=no-member
-                pygame.quit()  # pylint: disable=no-member
-                return
-        # new_version = randomize_board(game_engine, num_of_random_cells=width*2)
-        new_version = calculate_next_state(game_engine)
-        board.update(new_version)
-        sleep(1)
-        pygame.display.flip()
 
 
 if __name__ == "__main__":

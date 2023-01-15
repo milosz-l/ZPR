@@ -20,7 +20,7 @@ except ModuleNotFoundError or ImportError:  # pylint: disable=binary-op-exceptio
 
 WIDTH = 100     # width of tkinter window
 HEIGHT = 100    # height of tkinter window
-BOARD_SIZE = 50  # TODO: get this from cpp or the other way
+BOARD_SIZE = 50
 SLEEP = 0.5
 
 
@@ -290,8 +290,6 @@ class UserOptions:         # pylint: disable=too-many-instance-attributes,attrib
         if not self.board_in_file_has_correct_size(board_from_file) \
                 or not self.board_in_file_is_correct_for_parameters(board_from_file):
             game_engine.randomize_board(BOARD_SIZE*BOARD_SIZE)
-            # print("after randomizing board")
-            # game_engine.print_current_board()
         else:
             for row_num, row in enumerate(board_from_file):
                 for col_num, cell_value in enumerate(row):
@@ -377,4 +375,3 @@ def main():
 
 
 main()
-# https://stackoverflow.com/questions/23319059/embedding-a-pygame-window-into-a-tkinter-or-wxpython-frame
