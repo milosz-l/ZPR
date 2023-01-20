@@ -381,6 +381,3 @@ def main():
     game = UserOptions()
     while game.running:
         game.root.update()
-
-
-main()
