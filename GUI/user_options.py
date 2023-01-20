@@ -379,11 +379,8 @@ def check_user_options() -> None:
 def main():
     """Main function."""
     game = UserOptions()
-    while True:
-        if game.running:
-            game.root.update()
-        else:
-            break
+    while game.running:
+        game.root.update()
 
 
 main()
