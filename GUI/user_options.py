@@ -41,6 +41,7 @@ class UserOptions:  # pylint: disable=too-many-instance-attributes,attribute-def
             Sleep:          Slows down the game.
             Close:  Closes all windows.
         """
+        self.running = True
         self.root = tk.Tk()
         self.root.title("Game LtL")
         self.start_frame = tk.Frame(self.root, width=width, height=height)
@@ -340,6 +341,7 @@ class UserOptions:  # pylint: disable=too-many-instance-attributes,attribute-def
         """
         Stops the game and closes all windows.
         """
+        self.running = False
         pygame.quit()  # pylint: disable=no-member
         self.root.quit()
 
@@ -378,7 +380,10 @@ def main():
     """Main function."""
     game = UserOptions()
     while True:
-        game.root.update()
+        if game.running:
+            game.root.update()
+        else:
+            break
 
 
 main()
