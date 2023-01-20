@@ -337,14 +337,16 @@ class UserOptions:  # pylint: disable=too-many-instance-attributes,attribute-def
             except Exception:   # pylint: disable=broad-except
                 break
 
+    def on_closing(self):
+        self.running = False
+
     def stop(self) -> None:
         """
         Stops the game and closes all windows.
         """
         self.running = False
         pygame.quit()  # pylint: disable=no-member
-        self.root.quit()
-
+        self.root.quit() 
 
 def error_msg(title: str, msg: str) -> None:
     """
@@ -379,5 +381,6 @@ def check_user_options() -> None:
 def main():
     """Main function."""
     game = UserOptions()
+    game.root.protocol("WM_DELETE_WINDOW", game.on_closing)
     while game.running:
         game.root.update()
